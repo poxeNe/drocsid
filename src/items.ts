@@ -1,6 +1,23 @@
 import { tools } from '../src/util/_lib'
 import { affixes } from "./affixes";
 
+// Weapon Definition or Stateful (or Instance) Weapon
+// class WeaponType {
+//     getName() {
+//
+//     }
+// }
+//
+// class Weapon {
+//     type: WeaponType
+//     health: number = 100
+// }
+//
+//
+// export const getBaseItem = (): Weapon => {
+//
+// }
+
 export const items = {
     weapons: {
         dagger: {

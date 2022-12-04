@@ -1,7 +1,7 @@
 import { tools } from "./util/_lib";
 import { items } from "./items";
 
-export type Profession = "Warrior" | "warrior" | "Mage" | "mage" | "Thief" | "thief";
+export type Profession = "warrior" | "mage" | "thief";
 
 export class Character {
     name: string;
@@ -29,7 +29,7 @@ export class Character {
         weapon: {
             name: items.weapons.dagger.prefix + items.weapons.dagger.base + items.weapons.dagger.suffix,
             damage: items.weapons.dagger.damage,
-        },
+    },
         armor: {
             name: items.armor.robes.prefix + items.armor.robes.base + items.armor.robes.suffix,
             ac: items.armor.robes.ac,
@@ -42,7 +42,6 @@ export class Character {
 
         switch (profession) {
             case "warrior":
-            case "Warrior":
                 this.health = 20;
                 this.magika = 5;
                 this.physicalAttack = 10;
@@ -55,7 +54,6 @@ export class Character {
                 break;
 
             case "thief":
-            case "Thief":
                 this.health = 15;
                 this.magika = 10;
                 this.physicalAttack = 7;
@@ -68,7 +66,6 @@ export class Character {
                 break;
 
             case "mage":
-            case "Mage":
                 this.health = 10;
                 this.magika = 15;
                 this.physicalAttack = 5;
@@ -101,11 +98,10 @@ export class Character {
 
             case "physical":
                 if (tools.random.int(1, 100) <= this.criticalChance) {
-                    const damage = (this.physicalAttack + this.equipment.weapon.damage) * this.criticalModifier;
-                    return damage;
+                    return (this.physicalAttack + this.equipment.weapon.damage) * this.criticalModifier;
+
                 } else {
-                    const damage = (this.physicalAttack + this.equipment.weapon.damage)
-                    return damage;
+                    return (this.physicalAttack + this.equipment.weapon.damage);
                 }
 
             case "magikal":

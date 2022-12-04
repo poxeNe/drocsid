@@ -1,25 +1,39 @@
-import {Character} from "./Character";
+import readline from "readline/promises";
+import { Character } from "./Character";
 
-export const attack = (character: Character, target: Enemy) => {
-    const damageToDo = character.doDamage();
-    target.takeDamage(damageToDo);
-    while (character.health > 0 && enemy.health > 0) {
-        const prevEnemyHealth = enemy.health;
+export const actions = async (player: Character) => {
 
-        character.doDamage(enemy);
-        console.log(`You hit the enemy for ${ prevEnemyHealth - enemy.health } damage.`);
+    const rl = readline.createInterface( {
+        input: process.stdin,
+        output: process.stdin,
+    });
 
-        character.receiveDamage(enemy.damage);
-        console.log(`The enemy hits you for ${ enemy.damage } damage.`)
+    const playerChoice = await rl.question(`\n-[ Hello, ${ player.name }. What would you like to do?:
+        \n  -[ 1) Fight. \n  -[ 2) Rest. \n  -[ 3) Travel.
+    `);
 
-        console.log(`You have ${ character.profession.health } hitpoints remaining.`)
+    if (playerChoice === "1") {
+        console.log("Hello from choice #1!")
+
+        return
+
+        // TODO: implement combat
     }
-}
 
-export const rest = (character) => {
-    character.gold -= 50;
-    character.profession.health += 25;
+    if (playerChoice === "2") {
+        console.log("Hello from choice #2!")
 
-    console.log("You have gained 25 health for 50 gold.");
-    console.log(`You now have ${ character.profession.health } health and ${ character.gold }.`)
+        return
+
+        // TODO: implement resting
+    }
+
+    if (playerChoice === "3") {
+        console.log("Hello from choice #3!")
+
+        return
+
+        // TODO: implement exploring
+    }
+
 }
