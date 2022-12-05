@@ -5,7 +5,8 @@ export const mkNewCharacter = async () => {
 
     const rl = readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
+        terminal: false,
     });
 
     const name = await rl.question("\n-[ Welcome to Drocsid! It looks like you\'re new here -- let\'s create a character. What is your name? ");

@@ -6,6 +6,7 @@ export const actions = async (player: Character) => {
     const rl = readline.createInterface( {
         input: process.stdin,
         output: process.stdin,
+        terminal: false,
     });
 
     const playerChoice = await rl.question(`\n-[ Hello, ${ player.name }. What would you like to do?:
@@ -36,4 +37,5 @@ export const actions = async (player: Character) => {
         // TODO: implement exploring
     }
 
+    rl.close();
 }

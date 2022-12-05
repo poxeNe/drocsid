@@ -3,6 +3,64 @@ import { items } from "./items";
 
 export type Profession = "warrior" | "mage" | "thief";
 
+// type Spells = {
+//     fireball: {}
+//     potatoCannon: {}
+// }
+//
+// function useSpell(spellName: keyof Spells) {
+//
+// }
+//
+// useSpell('fireball')
+
+// type Spell = {
+//     name: string
+//     damage: number
+// }
+
+// // Way 1: a Map
+// const mySpellMap = new Map<string, Spell>();
+//
+// mySpellMap.set('fireball', {
+//     name: 'fireball',
+//     damage: 100,
+// })
+//
+// const calledSpell = mySpellMap.get('fireball');
+//
+// if (!calledSpell) {
+//     throw new Error('Spell not found');
+// }
+//
+// // Way 2: An array
+// const mySpells: Spell[] = [];
+//
+// const selectedSpell = mySpells.find(spell => spell.name === 'fireball');
+
+// if (!selectedSpell) {
+//     // // some comment
+//     // throw new Error("selected spell not found")
+// }
+
+// Way 3: an object
+// type SpellObj = {
+//     [key: string]: Spell
+// }
+//
+// type SpellObj2 = Record<string, Spell>;
+
+type SpellStats = {
+    getDamage: () => number
+    mp: number
+    description: string
+}
+
+// type SpellMap = { [key: string]: SpellStats }
+// type SpellMap2 = Record<string, SpellStats>
+
+type DamageType = 'physical' | 'magikal';
+
 export class Character {
     name: string;
     profession: Profession;
@@ -24,7 +82,7 @@ export class Character {
         healing: 0,
         mining: 0,
     };
-    spells = {};
+    spellbook: { [spellName: string]: SpellStats } = {};
     equipment = {
         weapon: {
             name: items.weapons.dagger.prefix + items.weapons.dagger.base + items.weapons.dagger.suffix,
@@ -72,14 +130,16 @@ export class Character {
                 this.physicalDefense = 1;
                 this.magikalAttack = 15;
                 this.magikalDefense = 5;
-                this.spells = {
-                    "firebolt": {
-                        damage: () => tools.random.int(3, 14),
+                this.spellbook = {
+                    firebolt: {
+                        getDamage: () => tools.random.int(3, 14),
                         mp: 3,
+                        description: 'Cast a small, fiery flame towards your enemy.',
                     },
-                    "icebolt": {
-                        damage: () => tools.random.int(6, 11),
+                    icebolt: {
+                        getDamage: () => tools.random.int(6, 11),
                         mp: 5,
+                        description: 'Cast a small, frozen shard towards your enemy.',
                     },
                 };
                 this.skills.evocation += 10.1;
@@ -92,26 +152,35 @@ export class Character {
         }
     }
 
-    doDamage(damageType: string, spell: string) {
+    doDamage(damageType: DamageType, spellName: string): { damage: number, isCritical: boolean } {
+
+        const isCritical = tools.random.int(1, 100) <= this.criticalChance;
 
         switch (damageType) {
 
             case "physical":
-                if (tools.random.int(1, 100) <= this.criticalChance) {
-                    return (this.physicalAttack + this.equipment.weapon.damage) * this.criticalModifier;
+                let physicalDamage = (this.physicalAttack + this.equipment.weapon.damage);
 
-                } else {
-                    return (this.physicalAttack + this.equipment.weapon.damage);
+                if (isCritical) {
+                    physicalDamage = physicalDamage * this.criticalModifier;
                 }
 
+                return { damage: physicalDamage, isCritical };
+
             case "magikal":
-                // if (tools.random.int(1, 100) <= this.criticalChance) {
-                //     const damage = (this.magikalAttack + this.spells[`${spell}`].damage) * this.criticalModifier;
-                //     return damage;
-                // } else {
-                //     const damage = (this.magikalAttack + this.spells[spell].damage);
-                //     return damage;
-                // }
+                const spell = this.spellbook[spellName];
+
+                if (!spell) {
+                    throw new Error('Spell not found');
+                }
+
+                let magicDamage = this.magikalAttack + spell.getDamage();
+
+                if (isCritical) {
+                    magicDamage = magicDamage * this.criticalModifier;
+                }
+
+                return { damage: magicDamage, isCritical };
         }
     }
 }
