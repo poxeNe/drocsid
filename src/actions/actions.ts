@@ -3,16 +3,19 @@ import { Character } from "../character/Character";
 
 export const actions = async (player: Character) => {
 
+    // Initialization of readline interface.
     const rl = readline.createInterface( {
         input: process.stdin,
         output: process.stdin,
         terminal: false,
     });
 
+    // Prompt the player with the menu and await their response to the question.
     const playerChoice = await rl.question(`\n-[ What would you like to do?:
         \n  -[ 1 ] Fight. \n  -[ 2 ] Rest. \n  -[ 3 ] Travel. \n  -[ 4 ] Exit.
     `);
 
+    // We now use the player's response, or "Promise", to determine which option to trigger.
     switch (playerChoice) {
         case "1": // TODO: Combat
             console.log("Hello from choice #1");
@@ -31,5 +34,6 @@ export const actions = async (player: Character) => {
             process.exit(1);
     }
 
+    // Close the readline interface to prevent multiple instances running and causing problems.
     rl.close();
 }

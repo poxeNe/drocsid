@@ -9,8 +9,13 @@ export class Weapon {
     suffix?: string
 
     constructor(rarity?: string, baseType?: string) { // YAGNI
+        // if a base type is not passed through, roll a random one from all types.
         this.weaponBase = baseType ?? this.getRandWepBase();
+
+        //if a rarity is not passed through, roll a random one.
         this.rarity = rarity ?? this.getRandRarity();
+
+        // take the item rarity and generate appropriate random affixes for the item.
         this.checkAffixes(this.rarity);
     }
 
@@ -26,14 +31,13 @@ export class Weapon {
             return "Magikal";
         } else if (randFloat < 0.55) {
             return "Uncommon";
-        } else if (randFloat < 1.0) {
-            return "Common";
         } else {
             return "Common";
         }
     }
 
     checkAffixes = (rarity: string) => {
+        // if the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
         if (rarity !== "Common") {
             this.getRandAffixes(rarity);
         }
@@ -42,8 +46,6 @@ export class Weapon {
     }
 
     getRandAffixes = (rarity: string) => {
-        let prefix: string
-        let suffix: string
         const randInt1 = tools.random.int(1, 2);
         const randInt2 = tools.random.int(1, 3);
 
@@ -55,6 +57,7 @@ export class Weapon {
                 break;
 
             case "Uncommon":
+                // uncommon items get either a prefix or a suffix, not both. we roll here to determine which one.
                 if (randInt1 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt1 === 2) {
@@ -63,6 +66,7 @@ export class Weapon {
                 break;
 
             case "Magikal":
+                // Magikal items get either a prefix, a suffix, or both. we roll here to determine which one.
                 if (randInt2 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt2 === 2) {
@@ -77,15 +81,6 @@ export class Weapon {
     }
 
 }
-
-// const getRandWepBase = (): string => {
-//     const randBase: "melee" | "caster" = tools.random.choice(["melee", "caster"]);
-//     return tools.random.choice(items.bases.normal[randBase]);
-// }
-
-// const getAffixes = (rarity): string => {
-//     const prefix
-// }
 
 export const getWeapon = (rarity?: string, baseType?: string) => new Weapon(rarity, baseType);
 

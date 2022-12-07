@@ -9,9 +9,6 @@ type SpellStats = {
     description: string
 }
 
-// type SpellMap = { [key: string]: SpellStats }
-// type SpellMap2 = Record<string, SpellStats>
-
 type DamageType = 'physical' | 'magikal';
 
 export class Character {
@@ -50,6 +47,7 @@ export class Character {
         this.name = name;
         this.profession = profession;
 
+        // Add more stat blocks depending on the profession the player chooses.
         switch (profession) {
             case "warrior":
                 this.health = 20;
@@ -103,6 +101,8 @@ export class Character {
                 break;
         }
     }
+
+    // TODO: We need to fix this damage calculation
 /*
     doDamage(damageType: DamageType, spellName: string): { damage: number, isCritical: boolean } {
 
@@ -138,80 +138,3 @@ export class Character {
 */
 
 }
-
-// class Thief extends Character {
-//     constructor() {
-//         this.health = 15;
-//     }
-// }
-
-
-/*
-
-const myChar = new Character();
-
-// Character.prototype.doDamage = function(enemy) {
-//     this.profession.doDamage(enemy)
-// }
-
-
-    // this.profession = "Thief";
-    this.health = 75;
-    this.attack = 10;
-    this.criticalChance = 0.15;
-    this.criticalModifier = 3;
-
-
-
-    const damage = Math.random() <= this.criticalChance
-        ? this.attack * this.criticalModifier
-        : this.attack;
-    enemy.health -= damage;
-*/
-
-// type Spells = {
-//     fireball: {}
-//     potatoCannon: {}
-// }
-//
-// function useSpell(spellName: keyof Spells) {
-//
-// }
-//
-// useSpell('fireball')
-
-// type Spell = {
-//     name: string
-//     damage: number
-// }
-
-// // Way 1: a Map
-// const mySpellMap = new Map<string, Spell>();
-//
-// mySpellMap.set('fireball', {
-//     name: 'fireball',
-//     damage: 100,
-// })
-//
-// const calledSpell = mySpellMap.get('fireball');
-//
-// if (!calledSpell) {
-//     throw new Error('Spell not found');
-// }
-//
-// // Way 2: An array
-// const mySpells: Spell[] = [];
-//
-// const selectedSpell = mySpells.find(spell => spell.name === 'fireball');
-
-// if (!selectedSpell) {
-//     // // some comment
-//     // throw new Error("selected spell not found")
-// }
-
-// Way 3: an object
-// type SpellObj = {
-//     [key: string]: Spell
-// }
-//
-// type SpellObj2 = Record<string, Spell>;
