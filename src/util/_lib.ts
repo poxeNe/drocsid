@@ -10,9 +10,9 @@ export const tools = {
         int: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min),
     //--- return a random index of an array
         choice(array: any) {
-            const choice = Math.floor(Math.random() * array.length)
+            const randIndex: number = Math.floor(Math.random() * array.length)
 
-            return array[choice];
+            return array[randIndex];
         },
     //--- roll any amount of dice with any amount of sides, and return an array of the results.
         dice: (quantity: number, sides: number) => {
