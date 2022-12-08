@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-export const tools = {
+export const lib = {
 
 //--- RANDOM ---//
     random: {
@@ -19,7 +19,7 @@ export const tools = {
             const dice_pool = []
 
             for (let i = 0; i < Number(quantity); i++) {
-                dice_pool.push(tools.random.int(1, sides))
+                dice_pool.push(lib.random.int(1, sides))
             }
 
             return dice_pool;
@@ -60,7 +60,7 @@ export const tools = {
         fdrFloat: (num: any) => {
             if (!Number.isInteger(num)) {
                 //--- round passed float to the 4th dig to the right of decimal.
-                const newNum = tools.math.roundFloat(num, 4)
+                const newNum = lib.math.roundFloat(num, 4)
                 //--- convert new rounded num to a string.
                 const numString = String(newNum)
                 //--- convert that string to an array.
@@ -85,20 +85,27 @@ export const tools = {
                     mod *= 10
                 }
                 if (String(num).length === 2) {
-                    return tools.math.roundFloat(num, 2)
+                    return lib.math.roundFloat(num, 2)
                 } else if (String(num).length === 1) {
                     if (num === 0) {
                         num = '00.00'
                         return num;
                     }
                     num = num * mod
-                    return tools.math.roundFloat(num, 2)
+                    return lib.math.roundFloat(num, 2)
                 } else {
                     num = num / mod
-                    return tools.math.roundFloat(num, 2)
+                    return lib.math.roundFloat(num, 2)
                 }
 
             }
+        },
+    },
+
+//--- MISCELLANEOUS ---//
+    misc: {
+        sleep: (ms: number) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
     },
 

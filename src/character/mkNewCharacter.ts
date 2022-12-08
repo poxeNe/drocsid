@@ -22,8 +22,6 @@ export const mkNewCharacter = async () => {
     rl.close();
 
     const player = new Character(name, profession.toLowerCase() as Profession);
-    const playerExists = true;
 
-    return { player, playerExists };
-
+    return player;
 }

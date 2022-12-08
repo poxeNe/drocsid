@@ -1,4 +1,4 @@
-import { tools } from '../util/_lib'
+import { lib } from '../util/lib'
 import { affixes } from "./affixes";
 
 export type Items = {

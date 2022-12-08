@@ -1,6 +1,7 @@
-import { tools } from "../util/_lib";
+import { lib } from "../util/lib";
 import { items } from "../items/items";
 
+export type Areas = "forest" | "swamps" | "mountains"
 export type Profession = "warrior" | "mage" | "thief";
 
 type SpellStats = {
@@ -44,6 +45,7 @@ export class Character {
         armor: {
         },
     };
+    area: Areas = "forest";
 
     constructor(name: string, profession: Profession,) {
         this.name = name;
@@ -90,14 +92,14 @@ export class Character {
                 this.magikalDefense = 5;
                 this.spellbook = {
                     firebolt: {
-                        getDamage: () => tools.random.int(3, 14),
+                        getDamage: () => lib.random.int(3, 14),
                         mp: 3,
-                        description: 'Shoot a small, fiery ember towards your enemy.',
+                        description: "Shoot a small, fiery ember towards your enemy.",
                     },
                     // icebolt: {
-                    //     getDamage: () => tools.random.int(6, 11),
+                    //     getDamage: () => lib.random.int(6, 11),
                     //     mp: 5,
-                    //     description: 'Shoot a small, frozen shard towards your enemy.',
+                    //     description: "Shoot a small, frozen shard towards your enemy.",
                     // },
                 };
                 this.skills.evocation += 10.1;
@@ -114,7 +116,7 @@ export class Character {
 /*
     doDamage(damageType: DamageType, spellName: string): { damage: number, isCritical: boolean } {
 
-        const isCritical = tools.random.int(1, 100) <= this.criticalChance;
+        const isCritical = lib.random.int(1, 100) <= this.criticalChance;
 
         switch (damageType) {
 

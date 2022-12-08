@@ -8,27 +8,23 @@ import { greeting } from "./greeting";
 export const main = async () => {
     // initialize character creation.
     // TODO: Implement saved games / checking for saved games to load.
-    const { player, playerExists } = await mkNewCharacter();
+    const player = await mkNewCharacter();
 
     // initial greeting for new characters.
     await greeting(player);
 
     // if player character does not exist for some reason, re-run main to initialize character creation again.
-    // if it does, initialize action menus.
-    if (!playerExists) {
+    // if it does, initialize actions menu.
+    if (!player) {
         main();
     } else {
-        while (playerExists) {
+        while (player) {
             await actions(player);
         }
     }
 
 };
 
-// main();
-for (let i = 0; i <= 7; i++) {
-    let newWeapon;
-    newWeapon = getWeapon()
-    console.log(newWeapon.prefix + " " + newWeapon.weaponBase + " " + newWeapon.suffix)
-}
+main();
+
 

@@ -1,4 +1,4 @@
-import { tools } from "../util/_lib"
+import { lib } from "../util/lib"
 import { items } from "./items";
 import { affixes } from "./affixes";
 
@@ -8,7 +8,7 @@ export class Weapon {
     prefix?: string
     suffix?: string
 
-    constructor(rarity?: string, baseType?: string) { // YAGNI
+    constructor(rarity?: string, baseType?: string) {
         // if a base type is not passed through, roll a random one from all types.
         this.weaponBase = baseType ?? this.getRandWepBase();
 
@@ -20,12 +20,12 @@ export class Weapon {
     }
 
     getRandWepBase = (): string => {
-        const randBase: "melee" | "caster" = tools.random.choice(["melee", "caster"]);
-        return tools.random.choice(items.bases.normal[randBase]);
+        const randBase: "melee" | "caster" = lib.random.choice(["melee", "caster"]);
+        return lib.random.choice(items.bases.normal[randBase]);
     }
 
     getRandRarity = () => {
-        const randFloat = tools.random.float();
+        const randFloat = lib.random.float();
 
         if (randFloat < 0.25) {
             return "Magikal";
@@ -46,11 +46,11 @@ export class Weapon {
     }
 
     getRandAffixes = (rarity: string) => {
-        const randInt1 = tools.random.int(1, 2);
-        const randInt2 = tools.random.int(1, 3);
+        const randInt1 = lib.random.int(1, 2);
+        const randInt2 = lib.random.int(1, 3);
 
-        const getRandPrefix = (): string => tools.random.choice(affixes.prefixes);
-        const getRandSuffix = (): string => tools.random.choice(affixes.suffixes);
+        const getRandPrefix = (): string => lib.random.choice(affixes.prefixes);
+        const getRandSuffix = (): string => lib.random.choice(affixes.suffixes);
 
         switch (rarity) {
             case "Common":
@@ -83,4 +83,10 @@ export class Weapon {
 }
 
 export const getWeapon = (rarity?: string, baseType?: string) => new Weapon(rarity, baseType);
+
+// for (let i = 0; i <= 7; i++) {
+//     let newWeapon;
+//     newWeapon = getWeapon()
+//     console.log(newWeapon.prefix + " " + newWeapon.weaponBase + " " + newWeapon.suffix)
+// }
 

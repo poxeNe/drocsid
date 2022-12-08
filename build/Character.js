@@ -70,7 +70,7 @@ class Character {
                 this.magikalDefense = 5;
                 this.spellbook = {
                     firebolt: {
-                        getDamage: () => _lib_1.tools.random.int(3, 14),
+                        getDamage: () => _lib_1.lib.random.int(3, 14),
                         mp: 3,
                         description: 'Shoot a small, fiery ember towards your enemy.',
                     },
@@ -89,7 +89,7 @@ class Character {
         }
     }
     doDamage(damageType, spellName) {
-        const isCritical = _lib_1.tools.random.int(1, 100) <= this.criticalChance;
+        const isCritical = _lib_1.lib.random.int(1, 100) <= this.criticalChance;
         switch (damageType) {
             case "physical":
                 let physicalDamage = (this.physicalAttack + this.equipment.weapon.damage);

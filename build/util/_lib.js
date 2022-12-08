@@ -1,8 +1,8 @@
 "use strict";
 // noinspection JSUnusedGlobalSymbols
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tools = void 0;
-exports.tools = {
+exports.lib = void 0;
+exports.lib = {
     //--- RANDOM ---//
     random: {
         //--- return a random float inclusive of 0 but not inclusive of 1.
@@ -18,7 +18,7 @@ exports.tools = {
         dice: (quantity, sides) => {
             const dice_pool = [];
             for (let i = 0; i < Number(quantity); i++) {
-                dice_pool.push(exports.tools.random.int(1, sides));
+                dice_pool.push(exports.lib.random.int(1, sides));
             }
             return dice_pool;
         },
@@ -52,7 +52,7 @@ exports.tools = {
         fdrFloat: (num) => {
             if (!Number.isInteger(num)) {
                 //--- round passed float to the 4th dig to the right of decimal.
-                const newNum = exports.tools.math.roundFloat(num, 4);
+                const newNum = exports.lib.math.roundFloat(num, 4);
                 //--- convert new rounded num to a string.
                 const numString = String(newNum);
                 //--- convert that string to an array.
@@ -75,7 +75,7 @@ exports.tools = {
                     mod *= 10;
                 }
                 if (String(num).length === 2) {
-                    return exports.tools.math.roundFloat(num, 2);
+                    return exports.lib.math.roundFloat(num, 2);
                 }
                 else if (String(num).length === 1) {
                     if (num === 0) {
@@ -83,11 +83,11 @@ exports.tools = {
                         return num;
                     }
                     num = num * mod;
-                    return exports.tools.math.roundFloat(num, 2);
+                    return exports.lib.math.roundFloat(num, 2);
                 }
                 else {
                     num = num / mod;
-                    return exports.tools.math.roundFloat(num, 2);
+                    return exports.lib.math.roundFloat(num, 2);
                 }
             }
         },

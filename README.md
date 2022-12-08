@@ -57,3 +57,14 @@ Currently built with a CLI but Discord bot functionality is coming once the core
 - Meditation
 - Healing
 - Mining
+
+### Environments:
+- There are multiple types of environments as of right now that contain different level ranges of monsters. As of right now, I plan to allow travel to any environment, regardless of level, but if you're not of the recommended level, or adequately geared, that's on you.
+
+##### Current environment types:
+- Forest
+- Swamps
+- Mountains
+
+### Loot:
+- Loot is very important and dear to me. This will be a work-in-progress for some time, I'm sure, but the fundamentals are heavily inspired by Diablo, particularly 1 and 2. The itemization in this game is simpler, so early implementations will more closely resemble Diablo 1. Loot is procedurally generated -- base type, rarity, and affixes (prefixes and suffixes), allowing for some pretty cool possibilities, potentially, and also adding that loot slot-machine type experience that I love.
