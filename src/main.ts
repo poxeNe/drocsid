@@ -4,6 +4,8 @@ import { actions } from './actions/actions'
 // import { Character } from "./character/Character";
 import { Weapon, getWeapon } from "./items/Weapon";
 import { greeting } from "./greeting";
+import {initCombat} from "./actions/initCombat";
+import {getEnemy} from "./enemies/Enemy";
 
 export const main = async () => {
     // initialize character creation.
@@ -19,6 +21,9 @@ export const main = async () => {
         main();
     } else {
         while (player) {
+            if (player.status === "combat") {
+                await initCombat(player, getEnemy(player.area));
+            }
             await actions(player);
         }
     }

@@ -23,8 +23,8 @@ export const actions = async (player: Character) => {
     // We now use the player's response, or "Promise", to determine which option to trigger.
     switch (playerChoice) {
         case "1": // TODO: Combat
-            initCombat(player, getEnemy(player.area));
-            console.log("\n-[ Fighting...");
+            player.status = "combat";
+            console.log("\n-[ Picking a fight...");
             await lib.misc.sleep(1500);
             break;
 
@@ -73,4 +73,5 @@ export const actions = async (player: Character) => {
 
     // Close the readline interface to prevent multiple instances running and causing problems.
     rl.close();
+
 }

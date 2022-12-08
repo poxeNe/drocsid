@@ -7,9 +7,14 @@ export class Enemy {
     name?: string
     baseType: string
     level: number
+    xpValue = 0
     area: keyof Enemies
     currentHealth: number
     maxHealth: number
+    physicalAttack = 0
+    physicalDefense = 0
+    magikalAttack = 0
+    magikalDefense = 0
 
     constructor(area?: keyof Enemies, level?: number) {
         this.area = area ?? this.getRandArea();
@@ -17,6 +22,8 @@ export class Enemy {
         this.level = level ?? this.getEnemyLevel(this.area);
         this.maxHealth = this.getEnemyHealth(this.level);
         this.currentHealth = this.maxHealth;
+        this.getEnemyAttack(this.baseType);
+        this.getEnemyXPValue(this.level);
     }
 
     getRandomEnemyBase = (area: keyof Enemies): string => {
@@ -40,6 +47,12 @@ export class Enemy {
         }
     }
 
+    getEnemyXPValue = (level: number) => {
+        if (level) {
+            this.xpValue = 50;
+        }
+    }
+
     getEnemyHealth = (level: number) => {
         // Determine random base health for the enemy.
         const baseHealth = lib.random.int(10, 20);
@@ -53,6 +66,51 @@ export class Enemy {
         }
 
         return enemyHealth;
+    }
+
+    getEnemyAttack = (baseType: string, level?: number) => {
+        switch (baseType) {
+
+        //--- FOREST ENEMIES ---//
+            case "Forest Squirrel":
+            case "Wolf":
+            case "Brown Bear":
+            case "Bandit":
+            case "Green-magik Satyr":
+            case "Treant":
+                this.physicalAttack = 5;
+                this.physicalDefense = 5;
+                this.magikalAttack = 5;
+                this.magikalDefense = 5;
+                break;
+
+        //--- SWAMP ENEMIES ---//
+            case "Swamp Frog":
+            case "Water Moccasin":
+            case "Swamp Crab":
+            case "Black-magik Satyr":
+            case "Alligator":
+            case "Turtle":
+                this.physicalAttack = 15;
+                this.physicalDefense = 15;
+                this.magikalAttack = 15;
+                this.magikalDefense = 15;
+                break;
+
+        //--- MOUNTAIN ENEMIES ---//
+            case "Eagle":
+            case "Mountain Fox":
+            case "Yaks":
+            case "Cougar":
+            case "Mountain Gorilla":
+            case "Red-magik Satyr":
+                this.physicalAttack = 15;
+                this.physicalDefense = 15;
+                this.magikalAttack = 15;
+                this.magikalDefense = 15;
+                break;
+        }
+
     }
 
 }

@@ -14,6 +14,7 @@ type DamageType = 'physical' | 'magikal';
 
 export class Character {
     name: string;
+    status = "";
     level = 1;
     currentXp = 0;
     XpToNextLevel = 200;
