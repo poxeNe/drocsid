@@ -46,7 +46,7 @@ Currently built with a CLI but Discord bot functionality is coming once the core
     - Healing: 5.1
 
 ### Skills:
-- The skill system is heavily inspired by Ultima Online, and will work similarly, with skill increases being influenced by what you're using or doing (e.g. attacking with a shortsword will level your One-Hand Weapons skill, casting spells will level your Evocation skill, etc.). Skills have character titles associated with them and start at 0.0 ( Novice ) -- can be leveled all the way up to 100 ( Grandmaster ).
+- The skill system is heavily inspired by Ultima Online, and will work similarly, with skill increases being influenced by what you're using or doing (e.g. attacking with a shortsword will level your One-Hand Weapons skill, casting spells will level your Evocation skill, etc.). Skills have character titles associated with them and are leveled up incrementally ( in 0.1 increments ), starting at 0.0 ( Novice ), and capping out at 100 ( Grandmaster ).
 
 ##### Current skill list:
 - One-Hand Weapons
