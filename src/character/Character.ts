@@ -17,8 +17,10 @@ export class Character {
     currentXp = 0;
     XpToNextLevel = 200;
     profession: Profession;
-    health = 0;
-    magika = 0;
+    currentHealth = 0;
+    maxHealth = 0;
+    currentMagika = 0;
+    maxMagika = 0;
     physicalAttack = 0;
     physicalDefense = 0;
     magikalAttack = 0;
@@ -50,8 +52,10 @@ export class Character {
         // Add more stat blocks depending on the profession the player chooses.
         switch (profession) {
             case "warrior":
-                this.health = 20;
-                this.magika = 5;
+                this.currentHealth = 20;
+                this.maxHealth = 20;
+                this.currentMagika = 5;
+                this.maxMagika = 5;
                 this.physicalAttack = 10;
                 this.physicalDefense = 5;
                 this.magikalAttack = 5;
@@ -62,8 +66,10 @@ export class Character {
                 break;
 
             case "thief":
-                this.health = 15;
-                this.magika = 10;
+                this.currentHealth = 15;
+                this.maxHealth = 15;
+                this.currentMagika = 10;
+                this.maxMagika = 10;
                 this.physicalAttack = 7;
                 this.physicalDefense = 3;
                 this.magikalAttack = 5;
@@ -74,8 +80,10 @@ export class Character {
                 break;
 
             case "mage":
-                this.health = 10;
-                this.magika = 15;
+                this.currentHealth = 10;
+                this.maxHealth = 10;
+                this.currentMagika = 15;
+                this.maxMagika = 15;
                 this.physicalAttack = 5;
                 this.physicalDefense = 1;
                 this.magikalAttack = 15;

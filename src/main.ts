@@ -5,7 +5,7 @@ import { actions } from './actions/actions'
 import { Weapon, getWeapon } from "./items/Weapon";
 import { greeting } from "./greeting";
 
-const main = async () => {
+export const main = async () => {
     // initialize character creation.
     // TODO: Implement saved games / checking for saved games to load.
     const { player, playerExists } = await mkNewCharacter();
