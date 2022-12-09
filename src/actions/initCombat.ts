@@ -6,18 +6,24 @@ import readline from "readline/promises";
 // await lib.misc.sleep(1500);
 
 export const initCombat = async (player: Character, enemy: Enemy) => {
-    let playerPhysicalAttackCause = player.physicalAttack - enemy.physicalDefense;
-    let enemyPhysicalDamageCause = enemy.physicalAttack - player.physicalDefense;
+
+    const calcPlayerDamage = () => {
+        let playerPhysicalAttackCause = player.physicalAttack + lib.random.int(player.equipped.leftHand.item.baseMinDamage, player.equipped.leftHand.item.baseMaxDamage) - enemy.physicalDefense;
+        if (playerPhysicalAttackCause < 0) { playerPhysicalAttackCause = 0; };
+        return playerPhysicalAttackCause;
+    }
+
+    const calcEnemyDamage = () => {
+        let enemyPhysicalDamageCause = enemy.physicalAttack - player.physicalDefense;
+        if (enemyPhysicalDamageCause < 0) { enemyPhysicalDamageCause = 0; };
+        return enemyPhysicalDamageCause;
+    }
+
     let playerMagikalDamageCause = player.magikalAttack - enemy.magikalDefense;
     let enemyMagikalDamageCause = enemy.magikalAttack - player.magikalDefense;
 
-    if (playerPhysicalAttackCause < 0) { playerPhysicalAttackCause = 0; }
-    if (enemyPhysicalDamageCause < 0) { enemyPhysicalDamageCause = 0; }
     if (playerMagikalDamageCause < 0) { playerMagikalDamageCause = 0; }
     if (enemyMagikalDamageCause < 0) { enemyMagikalDamageCause = 0; }
-
-
-
 
     // Initialization of readline interface.
     const rl = readline.createInterface( {
@@ -26,12 +32,14 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
         terminal: false,
     });
 
-    console.log(`\n-[ A wild ${ enemy.baseType } appears!`)
+    console.log(`\n-[ A wild level ${enemy.level} ${ enemy.baseType } appears!`);
     await lib.misc.sleep(1000);
 
     // TODO: Make striking first random
 
     while (enemy.currentHealth > 0) {
+        const playerPhysicalAttackCause = calcPlayerDamage();
+        const enemyPhysicalDamageCause = calcEnemyDamage();
 
         // Prompt the player with the menu and await their response to the question.
         const playerChoice = await rl.question(`\n-[ What would you like to do?:
@@ -39,9 +47,10 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
         `);
 
         switch (playerChoice) {
+
             case "1":
-                console.log("\n-[ Making a physical attack!");
-                await lib.misc.sleep(750);
+                console.log("\n-[ Making a physical attack!"); // TODO: Tell the player what they're swinging with.
+                await lib.misc.sleep(1000);
 
                 enemy.currentHealth -= playerPhysicalAttackCause
                 if (enemy.currentHealth <= 0) {
@@ -50,18 +59,19 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
                     break;
                 }
                 console.log(`\n-[ You hit the ${ enemy.baseType } for ${ playerPhysicalAttackCause }! It has ${ enemy.currentHealth } health remaining.`);
-                await lib.misc.sleep(750);
+                await lib.misc.sleep(1000);
 
                 player.currentHealth -= enemyPhysicalDamageCause;
                 if (player.currentHealth <= 0) {
-                    console.log(`\n-[ ${ enemy.baseType } has struck a fatal blow! You have perished. \n-[ Your deeds of valor shall be remembered.`);
+                    console.log(`\n-[ ${ enemy.baseType } has struck a fatal blow! You have perished. \n\n-[ Your deeds of valor shall be remembered.`);
                     process.exit(1);
                 }
                 console.log(`\n-[ The ${ enemy.baseType } hits you for ${ enemyPhysicalDamageCause }! You have ${ player.currentHealth } remaining!`);
+                await lib.misc.sleep(750);
                 break;
 
             case "2":
-                console.log("\n-[ Making a magikal attack!");
+                console.log("\n-[ Making a magikal attack!"); // TODO: Tell the player what spell they're using.
                 break;
 
             case "3":
@@ -75,7 +85,7 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
                     console.log("\n-[ You successfully got away!");
                     return;
                 } else {
-                    console.log("\n-[ You couldn't get away!")
+                    console.log("\n-[ You couldn't get away!");
                     break;
                 }
         }

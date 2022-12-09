@@ -2,26 +2,125 @@ import { lib } from "../util/lib"
 import { items } from "./items";
 import { affixes } from "./affixes";
 
+export type WeaponStats = {
+    name: string;
+    weaponBase: string;
+    baseMinDamage: number;
+    baseMaxDamage: number;
+    rarity: string;
+    prefix?: string;
+    suffix?: string;
+}
+
 export class Weapon {
-    weaponBase: string
-    rarity: string
-    prefix?: string
-    suffix?: string
+    name: string;
+    weaponBase: string;
+    baseMinDamage = 0;
+    baseMaxDamage = 0;
+    rarity: string;
+    prefix?: string;
+    suffix?: string;
 
     constructor(rarity?: string, baseType?: string) {
-        // if a base type is not passed through, roll a random one from all types.
+        // If a base type is not passed through, roll a random one from all types.
         this.weaponBase = baseType ?? this.getRandWepBase();
 
-        //if a rarity is not passed through, roll a random one.
+        // If a rarity is not passed through, roll a random one.
         this.rarity = rarity ?? this.getRandRarity();
 
-        // take the item rarity and generate appropriate random affixes for the item.
+        // Take the item rarity and generate appropriate random affixes for the item.
         this.checkAffixes(this.rarity);
+
+        // Generate random minimum and maximum damage depending on the item base type.
+        this.getBaseDamage(this.weaponBase);
+
+        this.name = this.getWeaponName(this.weaponBase);
     }
 
     getRandWepBase = (): string => {
         const randBase: "melee" | "caster" = lib.random.choice(["melee", "caster"]);
         return lib.random.choice(items.bases.normal[randBase]);
+    }
+
+    getWeaponName = (weaponBase: string) => {
+        let name: string = "";
+
+        if (this.prefix) {
+            name += `${this.prefix} `;
+        }
+
+        name += weaponBase;
+
+        if (this.suffix) {
+            name += `${this.suffix}`;
+        }
+
+        return name;
+    }
+
+    getBaseDamage = (weaponBase: string) => {
+        switch (weaponBase) {
+
+        //--- MELEE WEAPONS ---//
+            case "Dagger":
+                this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(4, 5);
+                break;
+
+            case "Hand Axe":
+                this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(5, 6);
+                break;
+
+            case "Shortsword":
+                this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(6, 7);
+                break;
+
+            case "Double Axe":
+                this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(7, 8);
+                break;
+
+            case "Spear":
+                this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(7, 8);
+                break;
+
+            case "Halberd":
+                this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(8, 9);
+                break;
+
+            case "Greatsword":
+                this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(9, 10);
+                break;
+
+            case "Great Axe":
+                this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(10, 11);
+                break;
+
+        //--- CASTER WEAPONS ---//
+            case "Wand":
+                this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(3, 4);
+                break;
+
+            case "Crosier":
+                this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(4, 5);
+                break;
+
+            case "Short Staff":
+                this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(5, 6);
+                break;
+
+            case "Long Staff":
+                this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(6, 7);
+                break;
+
+            case "Metal Staff":
+                this.baseMinDamage = lib.random.int(5, 6); this.baseMaxDamage = lib.random.int(7, 8);
+                break;
+
+            case "War Staff":
+                this.baseMinDamage = lib.random.int(6, 7); this.baseMaxDamage = lib.random.int(8, 9);
+                break;
+
+        }
+
     }
 
     getRandRarity = () => {
@@ -34,15 +133,18 @@ export class Weapon {
         } else {
             return "Common";
         }
+
     }
 
     checkAffixes = (rarity: string) => {
-        // if the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
+
+        // If the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
         if (rarity !== "Common") {
             this.getRandAffixes(rarity);
         }
 
         return;
+
     }
 
     getRandAffixes = (rarity: string) => {
@@ -53,11 +155,12 @@ export class Weapon {
         const getRandSuffix = (): string => lib.random.choice(affixes.suffixes);
 
         switch (rarity) {
+
             case "Common":
                 break;
 
+        // Uncommon items get either a prefix or a suffix, not both. we roll here to determine which one.
             case "Uncommon":
-                // uncommon items get either a prefix or a suffix, not both. we roll here to determine which one.
                 if (randInt1 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt1 === 2) {
@@ -65,8 +168,8 @@ export class Weapon {
                 }
                 break;
 
+        // Magikal items get either a prefix, a suffix, or both. we roll here to determine which one.
             case "Magikal":
-                // Magikal items get either a prefix, a suffix, or both. we roll here to determine which one.
                 if (randInt2 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt2 === 2) {
@@ -76,6 +179,7 @@ export class Weapon {
                     this.suffix = getRandSuffix();
                 }
                 break;
+
         }
 
     }
@@ -88,5 +192,6 @@ export const getWeapon = (rarity?: string, baseType?: string) => new Weapon(rari
 //     let newWeapon;
 //     newWeapon = getWeapon()
 //     console.log(newWeapon.prefix + " " + newWeapon.weaponBase + " " + newWeapon.suffix)
+//     console.log("Damage: " + newWeapon.baseMinDamage + " - " + newWeapon.baseMaxDamage)
 // }
 

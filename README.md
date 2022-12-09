@@ -68,3 +68,7 @@ Currently built with a CLI but Discord bot functionality is coming once the core
 
 ### Loot:
 - Loot is very important and dear to me. This will be a work-in-progress for some time, I'm sure, but the fundamentals are heavily inspired by Diablo, particularly 1 and 2. The itemization in this game is simpler, so early implementations will more closely resemble Diablo 1. Loot is procedurally generated -- base type, rarity, and affixes (prefixes and suffixes), allowing for some pretty cool possibilities, potentially, and also adding that loot slot-machine type experience that I love.
+
+## Ideas:
+- NPC, or something else, letting you know the quality of rolls on your item (whether or not your weapon rolled perfect min/max base damages)
+  - Possible to upgrade or augment an item to modify base damage rolls? Quest to increase min/max base damages by 1 at a time?
