@@ -2,10 +2,11 @@ import { Character } from "../character/Character";
 import { Enemy } from "../enemies/Enemy";
 import { lib } from "../util/lib";
 import readline from "readline/promises";
+import { chkForLevelUp } from "../character/chkForLevelUp";
 
 // await lib.misc.sleep(1500);
 
-export const initCombat = async (player: Character, enemy: Enemy) => {
+export const combatAction = async (player: Character, enemy: Enemy) => {
 
     const calcPlayerDamage = () => {
         let playerPhysicalAttackCause = player.physicalAttack + lib.random.int(player.equipped.leftHand.item.baseMinDamage, player.equipped.leftHand.item.baseMaxDamage) - enemy.physicalDefense;
@@ -32,6 +33,9 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
         terminal: false,
     });
 
+    console.log("\n-[ Picking a fight...");
+    await lib.misc.sleep(1500);
+
     console.log(`\n-[ A wild level ${enemy.level} ${ enemy.baseType } appears!`);
     await lib.misc.sleep(1000);
 
@@ -53,12 +57,14 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
                 await lib.misc.sleep(1000);
 
                 enemy.currentHealth -= playerPhysicalAttackCause
+                console.log(`\n-[ You hit the ${ enemy.baseType } for ${ playerPhysicalAttackCause }! It has ${ enemy.currentHealth } health remaining.`);
+
                 if (enemy.currentHealth <= 0) {
                     player.currentXp += enemy.xpValue
-                    console.log(`\nYou struck a fatal blow to the ${ enemy.baseType }! You gain ${ enemy.xpValue } experience!`);
+                    player.currentGold += enemy.goldValue
+                    console.log(`\n-[ You struck a fatal blow to the ${ enemy.baseType }! You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`);
                     break;
                 }
-                console.log(`\n-[ You hit the ${ enemy.baseType } for ${ playerPhysicalAttackCause }! It has ${ enemy.currentHealth } health remaining.`);
                 await lib.misc.sleep(1000);
 
                 player.currentHealth -= enemyPhysicalDamageCause;
@@ -92,5 +98,7 @@ export const initCombat = async (player: Character, enemy: Enemy) => {
 
     }
 
+    rl.close();
+    chkForLevelUp(player);
 
 }

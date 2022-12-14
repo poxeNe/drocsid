@@ -8,6 +8,7 @@ export class Enemy {
     baseType: string;
     level: number;
     xpValue = 0;
+    goldValue = 0;
     area: keyof Enemies;
     currentHealth: number;
     maxHealth: number;
@@ -23,6 +24,7 @@ export class Enemy {
         this.maxHealth = this.getEnemyHealth(this.level);
         this.currentHealth = this.maxHealth;
         this.getEnemyXPValue(this.level);
+        this.getEnemyGoldValue(this.level);
         this.getEnemyAttack(this.baseType, this.level);
         this.getEnemyDefense(this.baseType, this.level);
     }
@@ -89,6 +91,14 @@ export class Enemy {
             this.magikalAttack += lib.random.int(1, 3);
         }
 
+    }
+
+    getEnemyGoldValue = (level: number) => {
+        this.goldValue = lib.random.int(1, 5);
+
+        for (let i = 1; i < level; i++) {
+            this.goldValue += lib.random.int(1, 5);
+        }
     }
 
     getEnemyDefense = (baseType: string, level: number) => {

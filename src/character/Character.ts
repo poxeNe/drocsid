@@ -29,7 +29,8 @@ export class Character {
     status = "";
     level = 1;
     currentXp = 0;
-    XpToNextLevel = 200;
+    xpToNextLevel = 200;
+    currentGold = 0;
     profession: Profession;
     currentHealth = 0;
     maxHealth = 0;
