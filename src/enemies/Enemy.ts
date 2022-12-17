@@ -23,7 +23,7 @@ export class Enemy {
         this.level = level ?? this.getEnemyLevel(this.area);
         this.maxHealth = this.getEnemyHealth(this.level);
         this.currentHealth = this.maxHealth;
-        this.getEnemyXPValue(this.level);
+        this.getEnemyXPValue(this.level, this.maxHealth);
         this.getEnemyGoldValue(this.level);
         this.getEnemyAttack(this.baseType, this.level);
         this.getEnemyDefense(this.baseType, this.level);
@@ -150,7 +150,7 @@ export class Enemy {
 
     getEnemyXPValue = (level: number, maxHealth: number) => {
 
-        // this.xpValue =
+        this.xpValue = maxHealth + (level * 3);
 
     }
 
