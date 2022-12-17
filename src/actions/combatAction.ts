@@ -3,28 +3,15 @@ import { Enemy } from "../enemies/Enemy";
 import { lib } from "../util/lib";
 import readline from "readline/promises";
 import { chkForLevelUp } from "../character/chkForLevelUp";
+import { healingAction } from "./healingAction";
+import { fleeAction } from "./fleeAction";
+import { calcPlayerDamage } from "../combat/calcPlayerDamage";
+import { calcEnemyDamage } from "../combat/calcEnemyDamage";
 
 // await lib.misc.sleep(1500);
 
 export const combatAction = async (player: Character, enemy: Enemy) => {
 
-    const calcPlayerDamage = () => {
-        let playerPhysicalAttackCause = player.physicalAttack + lib.random.int(player.equipped.leftHand.item.baseMinDamage, player.equipped.leftHand.item.baseMaxDamage) - enemy.physicalDefense;
-        if (playerPhysicalAttackCause < 0) { playerPhysicalAttackCause = 0; };
-        return playerPhysicalAttackCause;
-    }
-
-    const calcEnemyDamage = () => {
-        let enemyPhysicalDamageCause = enemy.physicalAttack - player.physicalDefense;
-        if (enemyPhysicalDamageCause < 0) { enemyPhysicalDamageCause = 0; };
-        return enemyPhysicalDamageCause;
-    }
-
-    let playerMagikalDamageCause = player.magikalAttack - enemy.magikalDefense;
-    let enemyMagikalDamageCause = enemy.magikalAttack - player.magikalDefense;
-
-    if (playerMagikalDamageCause < 0) { playerMagikalDamageCause = 0; }
-    if (enemyMagikalDamageCause < 0) { enemyMagikalDamageCause = 0; }
 
     // Initialization of readline interface.
     const rl = readline.createInterface( {
@@ -42,8 +29,8 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
     // TODO: Make striking first random
 
     while (enemy.currentHealth > 0) {
-        const playerPhysicalAttackCause = calcPlayerDamage();
-        const enemyPhysicalDamageCause = calcEnemyDamage();
+        // const playerPhysicalAttackCause = calcPlayerDamage();
+        // const enemyPhysicalDamageCause = calcEnemyDamage();
 
         // Prompt the player with the menu and await their response to the question.
         const playerChoice = await rl.question(`\n-[ What would you like to do?:
@@ -53,47 +40,62 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         switch (playerChoice) {
 
             case "1":
-                console.log("\n-[ Making a physical attack!"); // TODO: Tell the player what they're swinging with.
+                console.log(`\n-[ You swing your ${ player.equipped.rightHand }...`); // TODO: Tell the player what they're swinging with.
+
                 await lib.misc.sleep(1000);
 
-                enemy.currentHealth -= playerPhysicalAttackCause
-                console.log(`\n-[ You hit the ${ enemy.baseType } for ${ playerPhysicalAttackCause }! It has ${ enemy.currentHealth } health remaining.`);
+                enemy.currentHealth -= calcPlayerDamage(player, enemy, "physical");
 
-                if (enemy.currentHealth <= 0) {
+                if (enemy.currentHealth > 0) {
+                    console.log(`\n-[ You strike the ${enemy.baseType} for ${ calcPlayerDamage(player, enemy, "physical") }! It has ${enemy.currentHealth} health remaining.`);
+
+                } else if (enemy.currentHealth <= 0) {
                     player.currentXp += enemy.xpValue
                     player.currentGold += enemy.goldValue
-                    console.log(`\n-[ You struck a fatal blow to the ${ enemy.baseType }! You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`);
+                    console.log(`\n-[ Your strike to the ${ enemy.baseType } was fatal!`);
+                    console.log(`\n-[ You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`);
+
                     break;
                 }
+
                 await lib.misc.sleep(1000);
 
-                player.currentHealth -= enemyPhysicalDamageCause;
+                player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
                 if (player.currentHealth <= 0) {
-                    console.log(`\n-[ ${ enemy.baseType } has struck a fatal blow! You have perished. \n\n-[ Your deeds of valor shall be remembered.`);
+                    console.log(`\n-[ ${ enemy.baseType } struck a fatal blow! You have perished. \n\n-[ Your deeds of valor will be remembered.`);
                     process.exit(1);
                 }
-                console.log(`\n-[ The ${ enemy.baseType } hits you for ${ enemyPhysicalDamageCause }! You have ${ player.currentHealth } remaining!`);
+
+                console.log(`\n-[ The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } remaining!`);
+
                 await lib.misc.sleep(750);
+
                 break;
 
             case "2":
                 console.log("\n-[ Making a magikal attack!"); // TODO: Tell the player what spell they're using.
+
                 break;
 
-            case "3":
-                console.log("\n-[ Healing...");
+            case "3": // TODO: Implement healing action.
+                await healingAction(player);
+                await lib.misc.sleep(1500);
+
                 break;
 
-            case "4":
-                console.log("\n-[ Attempting to flee...");
-                lib.misc.sleep(1500);
-                if (lib.random.int(1, 3) === 3) {
-                    console.log("\n-[ You successfully got away!");
+            case "4": // TODO: Variation to flee chance?
+                const playerFlee = await fleeAction();
+
+                if (playerFlee) {
                     return;
                 } else {
-                    console.log("\n-[ You couldn't get away!");
                     break;
                 }
+
+            default:
+                console.log("\n-[ ERROR ] Invalid option, please try again.");
+
+                break;
         }
 
     }

@@ -3,7 +3,7 @@ import { mkNewCharacter } from "./character/mkNewCharacter";
 import { actions } from './actions/actions'
 // import { Character } from "./character/Character";
 import { Weapon, getWeapon } from "./items/Weapon";
-import { greeting } from "./greeting";
+import { greeting } from "./messages/greeting";
 import { combatAction } from "./actions/combatAction";
 import { getEnemy } from "./enemies/Enemy";
 

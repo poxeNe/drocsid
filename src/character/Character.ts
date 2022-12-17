@@ -40,7 +40,7 @@ export class Character {
     physicalDefense = 0;
     magikalAttack = 0;
     magikalDefense = 0;
-    criticalChance = 1;
+    criticalChance = 20;
     criticalModifier = 1.5;
     skills = {
         oneHandWeapons: 0,
@@ -54,9 +54,7 @@ export class Character {
     };
     spellbook: { [spellName: string]: SpellStats } = {};
     equipped = {
-        leftHand: {
-            item: getWeapon("Common", "Dagger"),
-        },
+        leftHand: {},
         rightHand: {},
         handArmor: {},
         chestArmor: {},
@@ -135,18 +133,18 @@ export class Character {
 
     }
 
-    // equipItem = (item: WeaponStats, location: keyof Equipped) => {
-    //     const equipSlot = this.equipped[location]
-    //     const itemName: string = item.name
-    //     equipSlot[itemName] = item
-    // }
-    //
-    // getStartingEquipment = (profession: string) => {
-    //     if (profession.toLowerCase() === "warrior") {
-    //         const newWarriorWeapon = getWeapon("Common", "Shortsword");
-    //         this.equipped.leftHand.newWarriorWeapon
-    //     }
-    // }
+    equipItem = (item: WeaponStats, location: keyof Equipped) => {
+        const equipSlot = this.equipped[location]
+        const itemName: string = item.name
+        equipSlot[itemName] = item
+    }
+
+    getStartingEquipment = (profession: string) => {
+        if (profession.toLowerCase() === "warrior") {
+            const newWarriorWeapon = getWeapon("Common", "Shortsword");
+            this.equipped.leftHand.newWarriorWeapon
+        }
+    }
 
     // TODO: We need to fix this damage calculation
 /*

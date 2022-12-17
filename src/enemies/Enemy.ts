@@ -148,10 +148,10 @@ export class Enemy {
         }
     }
 
-    getEnemyXPValue = (level: number) => {
-        if (level) {
-            this.xpValue = 50;
-        }
+    getEnemyXPValue = (level: number, maxHealth: number) => {
+
+        // this.xpValue =
+
     }
 
     getEnemyHealth = (level: number) => {

@@ -5,7 +5,8 @@ import { combatAction } from "./combatAction";
 import { Enemy, getEnemy } from "../enemies/Enemy";
 import { Enemies } from "../enemies/enemies";
 import { Areas } from "../character/Character";
-import {travelAction} from "./travelAction";
+import { travelAction } from "./travelAction";
+import { restAction } from "./restAction";
 
 export const actions = async (player: Character) => {
 
@@ -29,7 +30,7 @@ export const actions = async (player: Character) => {
             break;
 
         case "2": // TODO: Add resting action.
-            console.log("\n-[ Resting...");
+            await restAction(player);
             await lib.misc.sleep(1500);
             break;
 
@@ -41,6 +42,10 @@ export const actions = async (player: Character) => {
         case "4":
             console.log(`\n-[ EXIT ] Until next time, ${ player.name }!`);
             process.exit(1);
+            break;
+
+        default:
+            throw new Error("Not a valid choice. Try again.");
     }
 
     // Close the readline interface to prevent multiple instances running and causing problems.
