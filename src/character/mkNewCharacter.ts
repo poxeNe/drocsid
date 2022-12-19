@@ -10,7 +10,7 @@ export const mkNewCharacter = async () => {
         terminal: false,
     });
 
-    const name = await rl.question("\n-[ Welcome to Drocsid! It looks like you\'re new here -- let\'s create a character. What is your name? ");
+    const name = await rl.question("\n-[ Welcome to Drocsid! \n\n-[ It looks like you\'re new here -- let\'s create a character. What is your name? ");
     let profession = await rl.question("\n-[ Are you a warrior, a thief, or a mage? ");
 
     const possibleProfessions = ["warrior", "thief", "mage"];

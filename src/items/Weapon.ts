@@ -1,11 +1,12 @@
 import { lib } from "../util/lib"
 import { items } from "./items";
 import { affixes } from "./affixes";
-import {formatWeaponBaseOut} from "../util/formatWeaponBaseOut";
+import { formatWeaponBaseOut } from "../util/formatWeaponBaseOut";
 
 export interface WeaponStats {
     name: string;
     weaponBase: string;
+    gripType: GripType;
     baseMinDamage: number;
     baseMaxDamage: number;
     rarity: string;
@@ -13,9 +14,12 @@ export interface WeaponStats {
     suffix?: string;
 }
 
+type GripType = 1 | 2;
+
 export class Weapon implements WeaponStats {
     name: string;
     weaponBase: string;
+    gripType: GripType;
     baseMinDamage = 0;
     baseMaxDamage = 0;
     rarity: string;
@@ -23,16 +27,19 @@ export class Weapon implements WeaponStats {
     suffix?: string;
 
     constructor(rarity?: string, baseType?: string) {
-        // If a base type is not passed through, roll a random one from all types.
+    // If a base type is not passed through, roll a random one from all types.
         this.weaponBase = baseType?.toLowerCase() ?? this.getRandWepBase();
 
-        // If a rarity is not passed through, roll a random one.
+    // Determine whether the weapon is one-handed or two-handed.
+        this.gripType = this.getGripType(this.weaponBase);
+
+    // If a rarity is not passed through, roll a random one.
         this.rarity = rarity?.toLowerCase() ?? this.getRandRarity();
 
-        // Take the item rarity and generate appropriate random affixes for the item.
+    // Take the item rarity and generate appropriate random affixes for the item.
         this.checkAffixes(this.rarity);
 
-        // Generate random minimum and maximum damage depending on the item base type.
+    // Generate random minimum and maximum damage depending on the item base type.
         this.getBaseDamage(this.weaponBase);
 
         this.name = this.getWeaponName(this.weaponBase);
@@ -41,6 +48,22 @@ export class Weapon implements WeaponStats {
     getRandWepBase = (): string => {
         const randBase: "melee" | "caster" = lib.random.choice(["melee", "caster"]);
         return lib.random.choice(items.bases.normal[randBase]);
+    }
+
+    getGripType = (weaponBase: string) => {
+        const oneHandWeapons = ["dagger", "handaxe", "javelin", "shortsword", "doubleaxe", "wand"];
+        const twoHandWeapons = ["spear", "greatsword", "greataxe", "halberd", "crosier", "shortstaff", "longstaff", "metalstaff", "warstaff"];
+
+
+        if (oneHandWeapons.includes(weaponBase)) {
+            return 1;
+        }
+
+        if (twoHandWeapons.includes(weaponBase)) {
+            return 2;
+        }
+
+        throw new Error("-[ ERROR ] Weapon not found! (getGripType)");
     }
 
     getWeaponName = (weaponBase: string) => {
@@ -139,7 +162,7 @@ export class Weapon implements WeaponStats {
 
     checkAffixes = (rarity: string) => {
 
-        // If the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
+    // If the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
         if (rarity !== "common") {
             this.getRandAffixes(rarity);
         }

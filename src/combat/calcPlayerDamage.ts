@@ -1,9 +1,9 @@
 import { Character } from "../character/Character";
 import { lib } from "../util/lib";
 import { Enemy } from "../enemies/Enemy";
-import { main } from "../main";
+import { mkAttackRoll } from "./mkAttackRoll";
 
-export const calcPlayerDamage = (player: Character, enemy: Enemy, attackType: string) => {
+export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackType: string) => {
 
     if (attackType === "physical") {
         let playerPhysicalAttackCause;
@@ -16,6 +16,7 @@ export const calcPlayerDamage = (player: Character, enemy: Enemy, attackType: st
         if (lib.random.int(1, 100) <= player.criticalChance) {
             playerPhysicalAttackCause = Math.floor((totalWeaponDamage * player.criticalModifier) - enemy.physicalDefense);
             console.log("\n-[ It was a critical hit!");
+            await lib.misc.sleep(1000);
         } else {
             playerPhysicalAttackCause = totalWeaponDamage - enemy.physicalDefense;
         }
