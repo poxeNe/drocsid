@@ -1,11 +1,6 @@
 import { mkNewCharacter } from "./character/mkNewCharacter";
-// import { items } from "./items/items";
 import { actions } from './actions/actions'
-// import { Character } from "./character/Character";
-import { Weapon, getWeapon } from "./items/Weapon";
 import { greeting } from "./messages/greeting";
-import { combatAction } from "./actions/combatAction";
-import { getEnemy } from "./enemies/Enemy";
 
 export const main = async () => {
     // initialize character creation.
