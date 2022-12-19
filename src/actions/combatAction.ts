@@ -40,7 +40,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         switch (playerChoice) {
 
             case "1":
-                console.log(`\n-[ You swing your ${ player.equipped.leftHand }...`); // TODO: Tell the player what they're swinging with.
+                console.log(`\n-[ You swing your ${ player.equipped.rightHand }...`);
 
                 await lib.misc.sleep(1000);
 
