@@ -1,5 +1,6 @@
 import readline from "readline/promises";
 import { Character, Profession } from "./Character";
+import {getStartingEquipment} from "./getStartingEquipment";
 
 export const mkNewCharacter = async () => {
 
@@ -22,6 +23,8 @@ export const mkNewCharacter = async () => {
     rl.close();
 
     const player = new Character(name, profession.toLowerCase() as Profession);
+
+    await getStartingEquipment(player);
 
     return player;
 }

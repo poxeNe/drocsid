@@ -2,7 +2,7 @@ import { lib } from "../util/lib"
 import { items } from "./items";
 import { affixes } from "./affixes";
 
-export type WeaponStats = {
+export interface WeaponStats {
     name: string;
     weaponBase: string;
     baseMinDamage: number;
@@ -12,7 +12,7 @@ export type WeaponStats = {
     suffix?: string;
 }
 
-export class Weapon {
+export class Weapon implements WeaponStats {
     name: string;
     weaponBase: string;
     baseMinDamage = 0;
@@ -62,60 +62,60 @@ export class Weapon {
         switch (weaponBase) {
 
         //--- MELEE WEAPONS ---//
-            case "Dagger":
+            case "dagger":
                 this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(4, 5);
                 break;
 
-            case "Hand Axe":
+            case "handaxe":
                 this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(5, 6);
                 break;
 
-            case "Shortsword":
+            case "shortsword":
                 this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(6, 7);
                 break;
 
-            case "Double Axe":
+            case "doubleaxe":
                 this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(7, 8);
                 break;
 
-            case "Spear":
+            case "spear":
                 this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(7, 8);
                 break;
 
-            case "Halberd":
+            case "halberd":
                 this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(8, 9);
                 break;
 
-            case "Greatsword":
+            case "greatsword":
                 this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(9, 10);
                 break;
 
-            case "Great Axe":
+            case "greataxe":
                 this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(10, 11);
                 break;
 
         //--- CASTER WEAPONS ---//
-            case "Wand":
+            case "wand":
                 this.baseMinDamage = lib.random.int(1, 2); this.baseMaxDamage = lib.random.int(3, 4);
                 break;
 
-            case "Crosier":
+            case "crosier":
                 this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(4, 5);
                 break;
 
-            case "Short Staff":
+            case "shortstaff":
                 this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(5, 6);
                 break;
 
-            case "Long Staff":
+            case "longstaff":
                 this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(6, 7);
                 break;
 
-            case "Metal Staff":
+            case "metalstaff":
                 this.baseMinDamage = lib.random.int(5, 6); this.baseMaxDamage = lib.random.int(7, 8);
                 break;
 
-            case "War Staff":
+            case "warstaff":
                 this.baseMinDamage = lib.random.int(6, 7); this.baseMaxDamage = lib.random.int(8, 9);
                 break;
 

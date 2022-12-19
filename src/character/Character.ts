@@ -1,6 +1,7 @@
 import { lib } from "../util/lib";
 import { items } from "../items/items";
 import { getWeapon, WeaponStats} from "../items/Weapon";
+import { getStartingEquipment } from "./getStartingEquipment";
 
 export type Areas = "forest" | "swamps" | "mountains"
 export type Profession = "warrior" | "mage" | "thief";
@@ -10,16 +11,30 @@ type SpellStats = {
     mp: number
     description: string
 }
+// what else
 
-type Equipped = {
-    leftHand: {}
-    rightHand: {}
-    handArmor: {}
-    chestArmor: {}
-    legArmor: {}
-    amulet: {}
-    leftRing: {}
-    rightRing: {}
+type EquipSlots = {
+    leftHand: WeaponStats | null;
+    rightHand: WeaponStats | null;
+    handArmor: WeaponStats | null;
+    chestArmor: WeaponStats | null;
+    legArmor: WeaponStats | null;
+    amulet: WeaponStats | null;
+    leftRing: WeaponStats | null;
+    rightRing: WeaponStats | null;
+}
+
+const getDefaultEquipment = (): EquipSlots => {
+    return {
+        leftHand: null,
+        rightHand: null,
+        handArmor: null,
+        chestArmor: null,
+        legArmor: null,
+        amulet: null,
+        leftRing: null,
+        rightRing: null,
+    }
 }
 
 type DamageType = 'physical' | 'magikal';
@@ -53,20 +68,11 @@ export class Character {
         mining: 0,
     };
     spellbook: { [spellName: string]: SpellStats } = {};
-    equipped = {
-        leftHand: {},
-        rightHand: {},
-        handArmor: {},
-        chestArmor: {},
-        legArmor: {},
-        amulet: {},
-        leftRing: {},
-        rightRing: {},
-    };
+    equipped: EquipSlots = getDefaultEquipment();
     inventory = [];
     area: Areas = "forest";
 
-    constructor(name: string, profession: Profession,) {
+    constructor(name: string, profession: Profession) {
         this.name = name;
         this.profession = profession;
 
@@ -133,52 +139,37 @@ export class Character {
 
     }
 
-    equipItem = (item: WeaponStats, location: keyof Equipped) => {
-        const equipSlot = this.equipped[location]
-        const itemName: string = item.name
-        equipSlot[itemName] = item
+    equipItem = (itemToEquip: WeaponStats, location: keyof EquipSlots) => {
+        this.equipped[location] = itemToEquip;
+
+        console.log(this.equipped);
     }
 
-    getStartingEquipment = (profession: string) => {
-        if (profession.toLowerCase() === "warrior") {
-            const newWarriorWeapon = getWeapon("Common", "Shortsword");
-            this.equipped.leftHand.newWarriorWeapon
-        }
+    unequipItem = (location: keyof EquipSlots) => {
+        this.equipped[location] = null;
     }
 
-    // TODO: We need to fix this damage calculation
-/*
-    doDamage(damageType: DamageType, spellName: string): { damage: number, isCritical: boolean } {
+    // getStartingEquipment = (player: Character) => {
+    //
+    //     if (player.profession === "warrior") {
+    //         player.equipItem(getWeapon("common", "shortsword"), "rightHand")
+    //     }
+    //
+    //     if (player.profession === "thief") {
+    //         player.equipItem(getWeapon("common", "dagger"), "rightHand")
+    //     }
+    //
+    //     if (player.profession === "mage") {
+    //         player.equipItem(getWeapon("common", "dagger"), "rightHand")
+    //     }
+    //
+    // }
 
-        const isCritical = lib.random.int(1, 100) <= this.criticalChance;
-
-        switch (damageType) {
-
-            case "physical":
-                let physicalDamage = (this.physicalAttack + this.equipment.weapon.damage);
-
-                if (isCritical) {
-                    physicalDamage = physicalDamage * this.criticalModifier;
-                }
-
-                return { damage: physicalDamage, isCritical };
-
-            case "magikal":
-                const spell = this.spellbook[spellName];
-
-                if (!spell) {
-                    throw new Error('Spell not found');
-                }
-
-                let magicDamage = this.magikalAttack + spell.getDamage();
-
-                if (isCritical) {
-                    magicDamage = magicDamage * this.criticalModifier;
-                }
-
-                return { damage: magicDamage, isCritical };
-        }
-    }
-*/
+    // getStartingEquipment = (profession: string) => {
+    //     if (profession.toLowerCase() === "warrior") {
+    //         const newWarriorWeapon = getWeapon("Common", "Shortsword");
+    //         this.equipped.leftHand.newWarriorWeapon
+    //     }
+    // }
 
 }
