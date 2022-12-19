@@ -1,6 +1,7 @@
 import { lib } from "../util/lib"
 import { items } from "./items";
 import { affixes } from "./affixes";
+import {formatWeaponBaseOut} from "../util/formatWeaponBaseOut";
 
 export interface WeaponStats {
     name: string;
@@ -23,10 +24,10 @@ export class Weapon implements WeaponStats {
 
     constructor(rarity?: string, baseType?: string) {
         // If a base type is not passed through, roll a random one from all types.
-        this.weaponBase = baseType ?? this.getRandWepBase();
+        this.weaponBase = baseType?.toLowerCase() ?? this.getRandWepBase();
 
         // If a rarity is not passed through, roll a random one.
-        this.rarity = rarity ?? this.getRandRarity();
+        this.rarity = rarity?.toLowerCase() ?? this.getRandRarity();
 
         // Take the item rarity and generate appropriate random affixes for the item.
         this.checkAffixes(this.rarity);
@@ -49,10 +50,10 @@ export class Weapon implements WeaponStats {
             name += `${this.prefix} `;
         }
 
-        name += weaponBase;
+        name += formatWeaponBaseOut(weaponBase);
 
         if (this.suffix) {
-            name += `${this.suffix}`;
+            name += ` ${this.suffix}`;
         }
 
         return name;
@@ -139,7 +140,7 @@ export class Weapon implements WeaponStats {
     checkAffixes = (rarity: string) => {
 
         // If the rarity is anything other than Common, the item gets a prefix, a suffix, or both.
-        if (rarity !== "Common") {
+        if (rarity !== "common") {
             this.getRandAffixes(rarity);
         }
 
@@ -156,11 +157,12 @@ export class Weapon implements WeaponStats {
 
         switch (rarity) {
 
-            case "Common":
+        // Common items don't get any special properties, so we instantly break and return nothing.
+            case "common":
                 break;
 
         // Uncommon items get either a prefix or a suffix, not both. we roll here to determine which one.
-            case "Uncommon":
+            case "uncommon":
                 if (randInt1 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt1 === 2) {
@@ -169,7 +171,7 @@ export class Weapon implements WeaponStats {
                 break;
 
         // Magikal items get either a prefix, a suffix, or both. we roll here to determine which one.
-            case "Magikal":
+            case "magikal":
                 if (randInt2 === 1) {
                     this.prefix = getRandPrefix();
                 } else if (randInt2 === 2) {
