@@ -2,6 +2,7 @@ import { Character } from "../character/Character";
 import { lib } from "../util/lib";
 import { Enemy } from "../enemies/Enemy";
 import { mkAttackRoll } from "./mkAttackRoll";
+import {drocsay} from "../util/drocsay";
 
 export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackType: string) => {
 
@@ -15,7 +16,7 @@ export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackTy
 
         if (lib.random.int(1, 100) <= player.criticalChance) {
             playerPhysicalAttackCause = Math.floor((totalWeaponDamage * player.criticalModifier) - enemy.physicalDefense);
-            console.log("\n-[ It was a critical hit!");
+            console.log(drocsay("It was a critical hit!", "magenta"));
             await lib.misc.sleep(1000);
         } else {
             playerPhysicalAttackCause = totalWeaponDamage - enemy.physicalDefense;
@@ -33,6 +34,6 @@ export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackTy
     }
 
 
-    throw new Error("-[ ERROR ] No attack type was found. (calcPlayerDamage)");
+    throw new Error(drocsay("ERROR ] No attack type was found. (calcPlayerDamage)", "red"));
 
 }
