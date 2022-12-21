@@ -9,6 +9,8 @@ import { calcPlayerDamage } from "../combat/calcPlayerDamage";
 import { calcEnemyDamage } from "../combat/calcEnemyDamage";
 import { mkAttackRoll } from "../combat/mkAttackRoll";
 import { chkSkillGains } from "../combat/chkSkillGains";
+import {drocsay} from "../util/drocsay";
+import {prism} from "../util/prism";
 
 // await lib.misc.sleep(1500);
 
@@ -21,10 +23,10 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         terminal: false,
     });
 
-    console.log("\n-[ Picking a fight...");
+    console.log(drocsay("Picking a fight...", "yellow"));
     await lib.misc.sleep(1500);
 
-    console.log(`\n-[ A wild level ${enemy.level} ${ enemy.baseType } appears!`);
+    console.log(drocsay(`A wild level ${enemy.level} ${ enemy.baseType } appears!`, "magenta"));
     await lib.misc.sleep(1000);
 
     // TODO: Make striking first random
@@ -33,15 +35,16 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         // const playerPhysicalAttackCause = calcPlayerDamage();
         // const enemyPhysicalDamageCause = calcEnemyDamage();
 
+        console.log(drocsay("What would you like to do?: "));
+
         // Prompt the player with the menu and await their response to the question.
-        const playerChoice = await rl.question(`\n-[ What would you like to do?:
-            \n  -[ 1 ] Physical Attack. \n  -[ 2 ] Magikal Attack. \n  -[ 3 ] Heal. \n  -[ 4 ] Flee.
-        `);
+        const playerChoice = await rl.question(prism(`\n  -[ 1 ] Physical Attack. \n  -[ 2 ] Magikal Attack. \n  -[ 3 ] Heal. \n  -[ 4 ] Flee.
+        `, "cyan"));
 
         switch (playerChoice) {
 
             case "1":
-                console.log(`\n-[ You swing your ${ player.equipped.rightHand }...`);
+                console.log(drocsay(`You swing your ${ player.equipped.rightHand }...`, "yellow"));
 
                 await lib.misc.sleep(1000);
 
@@ -53,7 +56,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                     enemy.currentHealth -= await calcPlayerDamage(player, enemy, "physical");
 
                     if (enemy.currentHealth > 0) {
-                        console.log(`\n-[ You strike the ${enemy.baseType} for ${ await calcPlayerDamage(player, enemy, "physical") }! It has ${enemy.currentHealth} health remaining.`);
+                        console.log(drocsay(`You strike the ${enemy.baseType} for ${ await calcPlayerDamage(player, enemy, "physical") }! It has ${enemy.currentHealth} health remaining.`, "yellow"));
                         await lib.misc.sleep(1000);
 
                     } else if (enemy.currentHealth <= 0) {
@@ -62,7 +65,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         player.currentXp += enemy.xpValue;
                         player.currentGold += enemy.goldValue;
 
-                        console.log(`\n-[ Your strike to the ${ enemy.baseType } was fatal!`);
+                        console.log(drocsay(`Your strike to the ${ enemy.baseType } was fatal!`, "yellow"));
                         await lib.misc.sleep(1000);
 
                         if (await chkSkillGains(player, "physical")) {
@@ -73,14 +76,14 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                             } else if (player.equipped.rightHand?.gripType === 2) {
                                 skillType = "Two-Hand Weapons";
                             } else {
-                                throw new Error("-[ ERROR ] Could not determine skillType! (combatAction)");
+                                throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                             }
 
-                            console.log(`\n-[ Your skill with ${ skillType } has increased by 0.1!`);
+                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
                             await lib.misc.sleep(1000);
                         }
 
-                        console.log(`\n-[ You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`);
+                        console.log(drocsay(`You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`, "yellow"));
 
                         break;
                     }
@@ -94,17 +97,17 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         } else if (player.equipped.rightHand?.gripType === 2) {
                             skillType = "Two-Hand Weapons";
                         } else {
-                            throw new Error("-[ ERROR ] Could not determine skillType! (combatAction)");
+                            throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                         }
 
-                        console.log(`\n-[ Your skill with ${ skillType } has increased by 0.1!`);
+                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
                         await lib.misc.sleep(1000);
                     }
 
                     break;
 
                 } else {
-                    console.log("\n-[ You missed!");
+                    console.log(drocsay("You missed!", "yellow"));
                     await lib.misc.sleep(1000);
                 }
 
@@ -116,11 +119,11 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 to reload the game and keep playing.
              */
                 if (player.currentHealth <= 0) {
-                    console.log(`\n-[ ${ enemy.baseType } struck a fatal blow! You have perished. \n\n-[ Your deeds of valor will be remembered.`);
+                    console.log(drocsay(`${ enemy.baseType } struck a fatal blow! You have perished. \n\n-[ Your deeds of valor will be remembered.`, "red"));
                     process.exit(1);
                 }
 
-                console.log(`\n-[ The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`);
+                console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
 
                 await lib.misc.sleep(1000);
 
@@ -147,7 +150,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 }
 
             default:
-                console.log("\n-[ ERROR ] Invalid option, please try again.");
+                console.log(drocsay("ERROR ] Invalid option, please try again.", "red"));
 
                 break;
         }
