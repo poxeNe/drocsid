@@ -9,8 +9,8 @@ import { calcPlayerDamage } from "../combat/calcPlayerDamage";
 import { calcEnemyDamage } from "../combat/calcEnemyDamage";
 import { mkAttackRoll } from "../combat/mkAttackRoll";
 import { chkSkillGains } from "../combat/chkSkillGains";
-import {drocsay} from "../util/drocsay";
-import {prism} from "../util/prism";
+import { drocsay } from "../util/drocsay";
+import { prism } from "../util/prism";
 
 // await lib.misc.sleep(1500);
 
@@ -44,7 +44,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         switch (playerChoice) {
 
             case "1":
-                console.log(drocsay(`You swing your ${ player.equipped.rightHand }...`, "yellow"));
+                console.log(drocsay(`You swing your ${ player.equipped.rightHand?.name }...`, "yellow"));
 
                 await lib.misc.sleep(1000);
 
@@ -104,8 +104,6 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         await lib.misc.sleep(1000);
                     }
 
-                    break;
-
                 } else {
                     console.log(drocsay("You missed!", "yellow"));
                     await lib.misc.sleep(1000);
@@ -119,7 +117,18 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 to reload the game and keep playing.
              */
                 if (player.currentHealth <= 0) {
-                    console.log(drocsay(`${ enemy.baseType } struck a fatal blow! You have perished. \n\n-[ Your deeds of valor will be remembered.`, "red"));
+                    console.log(drocsay(`${ enemy.baseType } struck a fatal blow! You have perished.`, "red"));
+                    console.log(drocsay(`Your deeds of valor will be remembered, ${ player.name }.`, "red"));
+                    console.log(drocsay(`Level: ${ player.level }`, "blue"));
+                    console.log(drocsay(`Current XP: ${ player.currentXp }`, "blue"));
+                    console.log(drocsay(`Current Gold: ${ player.currentGold }`, "blue"));
+                    console.log(drocsay(`Equipped Items: ${ player.equipped }`, "blue"));
+                    console.log(drocsay(`Spells Known: ${ player.spellbook }`, "blue"));
+                    console.log(drocsay(`Area Died: ${ player.area }`, "blue"));
+
+                    /*
+                    TODO: maybe list out a character sheet upon death with stats, equipment, total xp, etc.
+                     */
                     process.exit(1);
                 }
 
