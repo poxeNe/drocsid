@@ -28,19 +28,48 @@ export class Enemy {
         this.getEnemyGoldValue(this.level);
         this.getEnemyAttack(this.baseType, this.level);
         this.getEnemyDefense(this.baseType, this.level);
-        this.getInventory(this.baseType);
+        this.getInventory(this.area, this.baseType);
     }
 
     getRandomEnemyBase = (area: keyof Enemies): string => {
         return lib.random.choice(enemies[area]);
     }
 
-    getInventory = (baseType: string) => {
-        if (baseType) {
-            this.inventory.push("Herbs");
-            this.inventory.push("Sealed letter");
-            this.inventory.push("Moonberry");
-            this.inventory.push("Mead");
+    getInventory = (area: keyof Enemies, baseType: string) => {
+        if (area.toLowerCase().includes("forest")) {
+            this.inventory.push("Forest things");
+        }
+
+        if (area.toLowerCase().includes("swamps")) {
+            this.inventory.push("Swamp things");
+        }
+
+        if (area.toLowerCase().includes("mountains")) {
+            this.inventory.push("Mountain things");
+        }
+
+        if (baseType.toLowerCase() === "bandit") {
+            this.inventory.push("Bandit things");
+        }
+
+        if (baseType.toLowerCase() === "forest squirrel") {
+            this.inventory.push("Squirrel things");
+        }
+
+        if (baseType.toLowerCase() === "wolf") {
+            this.inventory.push("Wolf things");
+        }
+
+        if (baseType.toLowerCase() === "brown bear") {
+            this.inventory.push("Bear things");
+        }
+
+        if (baseType.toLowerCase() === "treant") {
+            this.inventory.push("Treant things");
+        }
+
+        if (baseType.toLowerCase() === "green-magik satyr") {
+            this.inventory.push("Satyr things");
         }
     }
 
