@@ -41,7 +41,7 @@ type DamageType = 'physical' | 'magikal';
 
 export class Character {
     name: string;
-    status = "";
+    // status = "";
     level = 1;
     currentXp = 0;
     xpToNextLevel = 200;
@@ -69,7 +69,7 @@ export class Character {
     };
     spellbook: { [spellName: string]: SpellStats } = {};
     equipped: EquipSlots = getDefaultEquipment();
-    inventory = [];
+    inventory: string[] = [];
     area: Areas = "forest";
 
     constructor(name: string, profession: Profession) {
@@ -141,35 +141,9 @@ export class Character {
 
     equipItem = (itemToEquip: WeaponStats, location: keyof EquipSlots) => {
         this.equipped[location] = itemToEquip;
-
-        console.log(this.equipped);
     }
 
     unequipItem = (location: keyof EquipSlots) => {
         this.equipped[location] = null;
     }
-
-    // getStartingEquipment = (player: Character) => {
-    //
-    //     if (player.profession === "warrior") {
-    //         player.equipItem(getWeapon("common", "shortsword"), "rightHand")
-    //     }
-    //
-    //     if (player.profession === "thief") {
-    //         player.equipItem(getWeapon("common", "dagger"), "rightHand")
-    //     }
-    //
-    //     if (player.profession === "mage") {
-    //         player.equipItem(getWeapon("common", "dagger"), "rightHand")
-    //     }
-    //
-    // }
-
-    // getStartingEquipment = (profession: string) => {
-    //     if (profession.toLowerCase() === "warrior") {
-    //         const newWarriorWeapon = getWeapon("Common", "Shortsword");
-    //         this.equipped.leftHand.newWarriorWeapon
-    //     }
-    // }
-
 }

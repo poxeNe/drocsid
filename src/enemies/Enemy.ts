@@ -16,6 +16,7 @@ export class Enemy {
     physicalDefense = 0;
     magikalAttack = 0;
     magikalDefense = 0;
+    inventory: string[] = [];
 
     constructor(area?: keyof Enemies, level?: number) {
         this.area = area ?? this.getRandArea();
@@ -27,10 +28,20 @@ export class Enemy {
         this.getEnemyGoldValue(this.level);
         this.getEnemyAttack(this.baseType, this.level);
         this.getEnemyDefense(this.baseType, this.level);
+        this.getInventory(this.baseType);
     }
 
     getRandomEnemyBase = (area: keyof Enemies): string => {
         return lib.random.choice(enemies[area]);
+    }
+
+    getInventory = (baseType: string) => {
+        if (baseType) {
+            this.inventory.push("Herbs");
+            this.inventory.push("Sealed letter");
+            this.inventory.push("Moonberry");
+            this.inventory.push("Mead");
+        }
     }
 
     getRandArea = (): keyof Enemies => {

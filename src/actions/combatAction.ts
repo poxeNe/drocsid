@@ -85,6 +85,11 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
 
                         console.log(drocsay(`You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`, "yellow"));
 
+                    // For each item in the enemy's inventory, add it to ours.
+                        enemy.inventory.forEach(e => player.inventory.push(e));
+
+                        console.log(drocsay(`The enemy dropped ${ enemy.inventory }. You put the things in your pack.`))
+
                         break;
                     }
 
@@ -118,13 +123,12 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
              */
                 if (player.currentHealth <= 0) {
                     console.log(drocsay(`${ enemy.baseType } struck a fatal blow! You have perished.`, "red"));
+                    await lib.misc.sleep(1000);
+
                     console.log(drocsay(`Your deeds of valor will be remembered, ${ player.name }.`, "red"));
-                    console.log(drocsay(`Level: ${ player.level }`, "blue"));
-                    console.log(drocsay(`Current XP: ${ player.currentXp }`, "blue"));
-                    console.log(drocsay(`Current Gold: ${ player.currentGold }`, "blue"));
-                    console.log(drocsay(`Equipped Items: ${ player.equipped }`, "blue"));
-                    console.log(drocsay(`Spells Known: ${ player.spellbook }`, "blue"));
-                    console.log(drocsay(`Area Died: ${ player.area }`, "blue"));
+                    await lib.misc.sleep(1000);
+
+                    console.log(drocsay(`----------] Final Stats [---------- ]-  \nLevel: ${ player.level }  \nCurrent XP: ${ player.currentXp }  \nCurrent Gold: ${ player.currentGold }  \nEquipped Items: ${ player.equipped }  \nSpells Known: ${ player.spellbook }  \nArea Died: ${ player.area }`, "blue"));
 
                     /*
                     TODO: maybe list out a character sheet upon death with stats, equipment, total xp, etc.

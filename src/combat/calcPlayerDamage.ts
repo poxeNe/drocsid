@@ -2,7 +2,7 @@ import { Character } from "../character/Character";
 import { lib } from "../util/lib";
 import { Enemy } from "../enemies/Enemy";
 import { mkAttackRoll } from "./mkAttackRoll";
-import {drocsay} from "../util/drocsay";
+import { drocsay } from "../util/drocsay";
 
 export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackType: string) => {
 
@@ -18,6 +18,7 @@ export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackTy
             playerPhysicalAttackCause = Math.floor((totalWeaponDamage * player.criticalModifier) - enemy.physicalDefense);
             console.log(drocsay("It was a critical hit!", "magenta"));
             await lib.misc.sleep(1000);
+
         } else {
             playerPhysicalAttackCause = totalWeaponDamage - enemy.physicalDefense;
         }
