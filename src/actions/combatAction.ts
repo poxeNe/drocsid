@@ -88,7 +88,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                     // For each item in the enemy's inventory, add it to ours.
                         enemy.inventory.forEach(e => player.inventory.push(e));
 
-                        console.log(drocsay(`The enemy dropped ${ enemy.inventory }. You put the things in your pack.`))
+                        console.log(drocsay(`The enemy dropped ${ lib.array.commas(enemy.inventory) }. You put the things in your pack.`))
 
                         break;
                     }
