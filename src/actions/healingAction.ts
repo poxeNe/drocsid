@@ -5,7 +5,7 @@ import { drocsay } from "../util/drocsay";
 
 export const healingAction = (player: Character) => {
 
-    if (player.inventory.includes("Herbs")) {
+    if (player.inventory.includes("Herbs" || "herbs")) {
 
         if (player.currentHealth >= player.maxHealth) {
             console.log(drocsay("You are already at max health -- you cannot heal right now!", "red"));
@@ -14,7 +14,7 @@ export const healingAction = (player: Character) => {
         }
 
     // Remove the first instance of herbs from the player's inventory to heal.
-        player.inventory.splice(player.inventory.indexOf("Herb", 1))
+        player.inventory.splice(player.inventory.indexOf("Herbs" || "herbs", 1))
 
         const randInt = lib.random.int(3, 8);
         const healAmount = Math.floor(randInt + player.skills.healing);

@@ -15,4 +15,6 @@ export const getStartingEquipment = (player: Character) => {
         player.equipItem(getWeapon("magikal", "dagger"), "rightHand")
     }
 
+    player.giveItem("Herbs", 2);
+
 }

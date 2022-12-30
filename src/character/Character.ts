@@ -145,6 +145,12 @@ export class Character {
         }
     }
 
+    giveItem = (item: string, amount: number) => {
+        for (let i = 0; i < amount; i++) {
+            this.inventory.push(item);
+        }
+    }
+
     equipItem = (itemToEquip: WeaponStats, location: keyof EquipSlots) => {
         this.equipped[location] = itemToEquip;
     }

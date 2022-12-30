@@ -22,10 +22,10 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         terminal: false,
     });
 
-    console.log(drocsay("Picking a fight...", "yellow"));
+    console.log(drocsay("Picking a fight..."));
     await lib.misc.sleep(1500);
 
-    console.log(drocsay(`A wild level ${enemy.level} ${ enemy.baseType } appears!`, "magenta"));
+    console.log(drocsay(`A wild ${ prism(`level ${enemy.level} ${ enemy.baseType }`, "magenta") } appears!`));
     await lib.misc.sleep(1000);
 
     // TODO: Make striking first random
@@ -56,7 +56,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                     enemy.currentHealth -= await calcPlayerDamage(player, enemy, "physical");
 
                     if (enemy.currentHealth > 0) {
-                        console.log(drocsay(`You strike the ${enemy.baseType} for ${ await calcPlayerDamage(player, enemy, "physical") }! It has ${enemy.currentHealth} health remaining.`, "yellow"));
+                        console.log(drocsay(`You strike the ${ prism(`${ enemy.baseType }`, "magenta") } for ${ prism(`${ await calcPlayerDamage(player, enemy, "physical") }`, "yellow") }! It has ${ prism(`${ enemy.currentHealth } health`, "red") } remaining.`));
                         await lib.misc.sleep(1000);
 
                     } else if (enemy.currentHealth <= 0) {
@@ -65,7 +65,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         player.currentXp += enemy.xpValue;
                         player.currentGold += enemy.goldValue;
 
-                        console.log(drocsay(`Your strike to the ${ enemy.baseType } was fatal!`, "yellow"));
+                        console.log(drocsay(`Your strike to the ${ prism(`${ enemy.baseType }`, "magenta") } was ${ prism("fatal", "red") }!`));
                         await lib.misc.sleep(1000);
 
                         if (await chkCombatSkillGains(player, "physical")) {
@@ -82,16 +82,19 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                                 throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                             }
 
-                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
+                            console.log(drocsay(`Your skill with ${ prism(`${ skillType }`, "blue") } has increased by ${ prism(`0.1`, "blue") }! Your ${ prism(`${ skillType }`, "blue") } level is now ${ prism(`${ player.skills[skillTypeFormatted] }`, "blue") }.`));
+
                             await lib.misc.sleep(1000);
                         }
 
-                        console.log(drocsay(`You gain ${ enemy.xpValue } experience, and ${ enemy.goldValue } gold pieces!`, "yellow"));
+                        console.log(drocsay(`You gain ${ prism(`${ enemy.xpValue } experience`, "blue") }, and ${ prism(`${ enemy.goldValue } gold pieces`, "yellow") }!`));
+
+                        await lib.misc.sleep(1000);
 
                     // For each item in the enemy's inventory, add it to ours.
                         enemy.inventory.forEach(e => player.inventory.push(e));
 
-                        console.log(drocsay(`The enemy dropped ${ lib.array.commas(enemy.inventory) }. You put the things in your pack.`))
+                        console.log(drocsay(`The enemy dropped ${ prism(`${ lib.array.commas(enemy.inventory) }`, "magenta") }. You put the things in your pack.`));
 
                         break;
                     }
@@ -111,7 +114,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                             throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                         }
 
-                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
+                        console.log(drocsay(`Your skill with ${ prism(`${ skillType }`, "blue") } has increased by 0.1! Your ${ prism(`${ skillType }`, "blue") } level is now ${ player.skills[skillTypeFormatted] }.`));
                         await lib.misc.sleep(1000);
                     }
 
@@ -129,7 +132,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
              */
                 await chkPlayerAlive(player, enemy);
 
-                console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
+                console.log(drocsay(`The ${ prism(`${ enemy.baseType }`, "magenta") } hits you for ${ prism(`${ calcEnemyDamage(player, enemy, "physical") }`, "yellow") }! You have ${ prism(`${ player.currentHealth } health`, "yellow") } remaining!`));
 
                 await lib.misc.sleep(1000);
 
@@ -150,7 +153,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
             // Calculate enemy's damage to us.
                 player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
 
-                console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
+                console.log(drocsay(`The ${ prism(`${ enemy.baseType }`, "magenta") } hits you for ${ prism(`${ calcEnemyDamage(player, enemy, "physical") }`, "yellow") }! You have ${ prism(`${ player.currentHealth } health`, "yellow") } remaining!`));
 
                 await chkPlayerAlive(player, enemy);
 
@@ -170,7 +173,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 // Calculate enemy's damage to us.
                     player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
 
-                    console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
+                    console.log(drocsay(`The ${ prism(`${ enemy.baseType }`, "magenta") } hits you for ${ prism(`${ calcEnemyDamage(player, enemy, "physical") }`, "yellow") }! You have ${ prism(`${ player.currentHealth } health`, "yellow") } remaining!`));
 
                     await chkPlayerAlive(player, enemy);
 
