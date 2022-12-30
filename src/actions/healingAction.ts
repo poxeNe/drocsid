@@ -1,6 +1,29 @@
 import { Character } from "../character/Character";
+import { lib } from "../util/lib";
+import { chkHealingSkillGains } from "../combat/healing/chkHealingSkillGains";
+import { drocsay } from "../util/drocsay";
 
 export const healingAction = (player: Character) => {
-    console.log(`Hello, ${ player.name }, from inside the healing action.`);
-    return;
+
+    if (player.inventory.includes("Herbs")) {
+        player.inventory.splice(player.inventory.indexOf("Herb", 1))
+
+        const randInt = lib.random.int(3, 8);
+        const healAmount = Math.floor(randInt + player.skills.healing);
+
+        player.currentHealth += healAmount;
+
+        console.log(drocsay(`You eat some herbs and recover ${ healAmount } health! Your health is now ${ player.currentHealth }.`, "green"));
+
+        if (chkHealingSkillGains(player)) {
+            console.log(drocsay("Your skill with Healing has increased by 0.1!", "green"));
+        }
+
+        return;
+
+    } else {
+        console.log(drocsay("You aren't currently carrying any herbs -- you cannot heal right now!", "red"));
+
+        return;
+    }
 }

@@ -1,8 +1,8 @@
 import { lib } from "../util/lib";
 import { Character } from "../character/Character";
-import {drocsay} from "../util/drocsay";
+import { drocsay } from "../util/drocsay";
 
-export const chkSkillGains = (player: Character, skillUsed: string) => {
+export const chkCombatSkillGains = (player: Character, skillUsed: string) => {
     let gripType: "oneHandWeapons" | "twoHandWeapons";
     let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
 
@@ -13,7 +13,7 @@ export const chkSkillGains = (player: Character, skillUsed: string) => {
         gripType = "twoHandWeapons";
         skillType = "Two-Hand Weapons";
     } else {
-        throw new Error(drocsay("ERROR ] Could not set grip type for your weapon! (chkSkillGains)", "red"));
+        throw new Error(drocsay("ERROR ] Could not set grip type for your weapon! (chkCombatSkillGains)", "red"));
     }
 
     if (skillUsed === "physical") {
