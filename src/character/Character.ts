@@ -87,9 +87,9 @@ export class Character {
                 this.physicalDefense = 2;
                 this.magikalAttack = 1;
                 this.magikalDefense = 0;
-                this.skills.twoHandWeapons += 10.1;
-                this.skills.heavyArmor += 10.1;
-                this.skills.healing += 5.1;
+                this.skills.twoHandWeapons += 10;
+                this.skills.heavyArmor += 10;
+                this.skills.healing += 5;
                 break;
 
             case "thief":
@@ -101,9 +101,9 @@ export class Character {
                 this.physicalDefense = 1;
                 this.magikalAttack = 3;
                 this.magikalDefense = 1;
-                this.skills.oneHandWeapons += 10.1;
-                this.skills.lightArmor += 10.1;
-                this.skills.healing += 5.1;
+                this.skills.oneHandWeapons += 10;
+                this.skills.lightArmor += 10;
+                this.skills.healing += 5;
                 break;
 
             case "mage":
@@ -127,9 +127,9 @@ export class Character {
                     //     description: "Shoot a small, frozen shard towards your enemy.",
                     // },
                 };
-                this.skills.evocation += 10.1;
-                this.skills.meditation += 10.1;
-                this.skills.healing += 5.1;
+                this.skills.evocation += 10;
+                this.skills.meditation += 10;
+                this.skills.healing += 5;
                 break;
 
             default:
@@ -139,6 +139,12 @@ export class Character {
 
     }
 
+    chkMaxHealth = (currentHealth: number) => {
+        if (currentHealth > this.maxHealth) {
+            this.currentHealth = this.maxHealth;
+        }
+    }
+
     equipItem = (itemToEquip: WeaponStats, location: keyof EquipSlots) => {
         this.equipped[location] = itemToEquip;
     }
@@ -146,4 +152,5 @@ export class Character {
     unequipItem = (location: keyof EquipSlots) => {
         this.equipped[location] = null;
     }
+
 }
