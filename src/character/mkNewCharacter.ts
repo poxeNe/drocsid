@@ -27,5 +27,13 @@ export const mkNewCharacter = async () => {
 
     await getStartingEquipment(player);
 
+    const addHealingPack = (num: number) => {
+        for (let i = 0; i < num; i++) {
+            player.inventory.push("Herbs");
+        }
+    }
+
+    addHealingPack(5);
+
     return player;
 }

@@ -6,6 +6,8 @@ import { drocsay } from "../util/drocsay";
 export const healingAction = (player: Character) => {
 
     if (player.inventory.includes("Herbs")) {
+
+    // Remove the first instance of herbs from the player's inventory to heal.
         player.inventory.splice(player.inventory.indexOf("Herb", 1))
 
         const randInt = lib.random.int(3, 8);
@@ -16,7 +18,7 @@ export const healingAction = (player: Character) => {
         console.log(drocsay(`You eat some herbs and recover ${ healAmount } health! Your health is now ${ player.currentHealth }.`, "green"));
 
         if (chkHealingSkillGains(player)) {
-            console.log(drocsay("Your skill with Healing has increased by 0.1!", "green"));
+            console.log(drocsay(`Your skill with Healing has increased by 0.1! Your Healing level is now ${ player.skills.healing }.`, "green"));
         }
 
         return;

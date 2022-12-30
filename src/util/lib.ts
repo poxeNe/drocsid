@@ -64,19 +64,24 @@ export const lib = {
     //--- pass through an int or float, return a 4-digit rounded float (2 digits to the left/right of the decimal).
         fdrFloat: (num: any) => {
             if (!Number.isInteger(num)) {
+
                 //--- round passed float to the 4th dig to the right of decimal.
-                const newNum = lib.math.roundFloat(num, 4)
+                const newNum = lib.math.roundFloat(num, 4);
+
                 //--- convert new rounded num to a string.
-                const numString = String(newNum)
+                const numString = String(newNum);
+
                 //--- convert that string to an array.
-                const numArray = Array.from(numString)
+                const numArray = Array.from(numString);
+
                 //--- splice off the "0." from the string.
-                numArray.splice(0, 2)
+                numArray.splice(0, 2);
+
                 //--- splice in a period 2 indexes over into the array.
-                numArray.splice(2, 0, '.')
+                numArray.splice(2, 0, '.');
 
                 //--- concatenate the indexes together into a new string.
-                return parseFloat(numArray.join(''))
+                return parseFloat(numArray.join(''));
 
             //--- OLD: this manually does what .join() does, basically.
                 // for (let i = 0; i < numArray.length; i++) {

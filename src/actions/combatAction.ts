@@ -70,16 +70,19 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
 
                         if (await chkCombatSkillGains(player, "physical")) {
                             let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
+                            let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
 
                             if (player.equipped.rightHand?.gripType === 1) {
                                 skillType = "One-Hand Weapons";
+                                skillTypeFormatted = "oneHandWeapons";
                             } else if (player.equipped.rightHand?.gripType === 2) {
                                 skillType = "Two-Hand Weapons";
+                                skillTypeFormatted = "twoHandWeapons";
                             } else {
                                 throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                             }
 
-                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
+                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
                             await lib.misc.sleep(1000);
                         }
 
@@ -96,16 +99,19 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 // Roll to see if we gain any skills or not.
                     if (await chkCombatSkillGains(player, "physical")) {
                         let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
+                        let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
 
                         if (player.equipped.rightHand?.gripType === 1) {
                             skillType = "One-Hand Weapons";
+                            skillTypeFormatted = "oneHandWeapons";
                         } else if (player.equipped.rightHand?.gripType === 2) {
                             skillType = "Two-Hand Weapons";
+                            skillTypeFormatted = "twoHandWeapons";
                         } else {
                             throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                         }
 
-                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
+                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
                         await lib.misc.sleep(1000);
                     }
 
@@ -139,7 +145,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
             case "3": // TODO: Implement healing action.
                 await healingAction(player);
 
-                await lib.misc.sleep(1500);
+                await lib.misc.sleep(1000);
 
             // Calculate enemy's damage to us.
                 player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
@@ -147,6 +153,8 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
 
                 await chkPlayerAlive(player, enemy);
+
+                await lib.misc.sleep(1000);
 
                 break;
 
