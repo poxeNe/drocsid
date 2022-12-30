@@ -72,3 +72,11 @@ Currently built with a CLI but Discord bot functionality is coming once the core
 ## Ideas:
 - NPC, or something else, letting you know the quality of rolls on your item (whether or not your weapon rolled perfect min/max base damages)
   - Possible to upgrade or augment an item to modify base damage rolls? Quest to increase min/max base damages by 1 at a time?
+- Karma system?
+  - Getting caught doing "bad" things, such as pickpocketing, or stealing.
+- New skill ideas:
+  - Pickpocketing/Thievery
+  - Alchemy
+  - Herbalism
+  - White Magik (Healing spells)
+  - Black Magik (DoT spells)
