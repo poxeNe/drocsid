@@ -8,15 +8,14 @@ import { fleeAction } from "./fleeAction";
 import { calcPlayerDamage } from "../combat/calcPlayerDamage";
 import { calcEnemyDamage } from "../combat/calcEnemyDamage";
 import { mkAttackRoll } from "../combat/mkAttackRoll";
-import { chkSkillGains } from "../combat/chkSkillGains";
+import { chkCombatSkillGains } from "../combat/chkCombatSkillGains";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
-
-// await lib.misc.sleep(1500);
+import {chkPlayerAlive} from "../combat/chkPlayerAlive";
 
 export const combatAction = async (player: Character, enemy: Enemy) => {
 
-    // Initialization of readline interface.
+// Initialization of readline interface.
     const rl = readline.createInterface( {
         input: process.stdin,
         output: process.stdin,
@@ -37,12 +36,13 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
 
         console.log(drocsay("What would you like to do?: "));
 
-        // Prompt the player with the menu and await their response to the question.
+    // Prompt the player with the menu and await their response to the question.
         const playerChoice = await rl.question(prism(`\n  -[ 1 ] Physical Attack. \n  -[ 2 ] Magikal Attack. \n  -[ 3 ] Heal. \n  -[ 4 ] Flee.
         `, "cyan"));
 
         switch (playerChoice) {
 
+        //--- PHYSICAL ATTACK ---//
             case "1":
                 console.log(drocsay(`You swing your ${ player.equipped.rightHand?.name }...`, "yellow"));
 
@@ -68,18 +68,21 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         console.log(drocsay(`Your strike to the ${ enemy.baseType } was fatal!`, "yellow"));
                         await lib.misc.sleep(1000);
 
-                        if (await chkSkillGains(player, "physical")) {
+                        if (await chkCombatSkillGains(player, "physical")) {
                             let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
+                            let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
 
                             if (player.equipped.rightHand?.gripType === 1) {
                                 skillType = "One-Hand Weapons";
+                                skillTypeFormatted = "oneHandWeapons";
                             } else if (player.equipped.rightHand?.gripType === 2) {
                                 skillType = "Two-Hand Weapons";
+                                skillTypeFormatted = "twoHandWeapons";
                             } else {
                                 throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                             }
 
-                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
+                            console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
                             await lib.misc.sleep(1000);
                         }
 
@@ -94,18 +97,21 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                     }
 
                 // Roll to see if we gain any skills or not.
-                    if (await chkSkillGains(player, "physical")) {
+                    if (await chkCombatSkillGains(player, "physical")) {
                         let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
+                        let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
 
                         if (player.equipped.rightHand?.gripType === 1) {
                             skillType = "One-Hand Weapons";
+                            skillTypeFormatted = "oneHandWeapons";
                         } else if (player.equipped.rightHand?.gripType === 2) {
                             skillType = "Two-Hand Weapons";
+                            skillTypeFormatted = "twoHandWeapons";
                         } else {
                             throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                         }
 
-                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1!`, "green"));
+                        console.log(drocsay(`Your skill with ${ skillType } has increased by 0.1! Your ${ skillType } level is now ${ player.skills[skillTypeFormatted] }.`, "green"));
                         await lib.misc.sleep(1000);
                     }
 
@@ -114,27 +120,14 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                     await lib.misc.sleep(1000);
                 }
 
-            // Calculated enemy's damage to us.
+            // Calculate enemy's damage to us.
                 player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
 
             // When the player has no health remaining, display a message and then exit the game.
             /* TODO: implement different penalties on death, especially after we have save games, as the player would just be able
                 to reload the game and keep playing.
              */
-                if (player.currentHealth <= 0) {
-                    console.log(drocsay(`${ enemy.baseType } struck a fatal blow! You have perished.`, "red"));
-                    await lib.misc.sleep(1000);
-
-                    console.log(drocsay(`Your deeds of valor will be remembered, ${ player.name }.`, "red"));
-                    await lib.misc.sleep(1000);
-
-                    console.log(drocsay(`----------] Final Stats [---------- ]-  \nLevel: ${ player.level }  \nCurrent XP: ${ player.currentXp }  \nCurrent Gold: ${ player.currentGold }  \nEquipped Items: ${ player.equipped }  \nSpells Known: ${ player.spellbook }  \nArea Died: ${ player.area }`, "blue"));
-
-                    /*
-                    TODO: maybe list out a character sheet upon death with stats, equipment, total xp, etc.
-                     */
-                    process.exit(1);
-                }
+                await chkPlayerAlive(player, enemy);
 
                 console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
 
@@ -142,23 +135,45 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
 
                 break;
 
+        //--- MAGIKAL ATTACK ---//
             case "2":
-                console.log("\n-[ Making a magikal attack!"); // TODO: Tell the player what spell they're using.
+                console.log(drocsay("Making a magikal attack!", "yellow")); // TODO: Tell the player what spell they're using.
 
                 break;
 
+        //--- HEALING ACTION ---//
             case "3": // TODO: Implement healing action.
                 await healingAction(player);
-                await lib.misc.sleep(1500);
+
+                await lib.misc.sleep(1000);
+
+            // Calculate enemy's damage to us.
+                player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
+
+                console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
+
+                await chkPlayerAlive(player, enemy);
+
+                await lib.misc.sleep(1000);
 
                 break;
 
+        //--- FLEE ACTION ---//
             case "4": // TODO: Variation to flee chance?
                 const playerFlee = await fleeAction();
 
                 if (playerFlee) {
                     return;
+
                 } else {
+
+                // Calculate enemy's damage to us.
+                    player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
+
+                    console.log(drocsay(`The ${ enemy.baseType } hits you for ${ calcEnemyDamage(player, enemy, "physical") }! You have ${ player.currentHealth } health remaining!`, "red"));
+
+                    await chkPlayerAlive(player, enemy);
+
                     break;
                 }
 

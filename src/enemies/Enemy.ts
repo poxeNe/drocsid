@@ -37,7 +37,11 @@ export class Enemy {
 
     getInventory = (area: keyof Enemies, baseType: string) => {
         if (area.toLowerCase().includes("forest")) {
-            this.inventory.push("Forest things");
+            const randInt = lib.random.int(1, 1);
+
+            if (randInt === 1) {
+                this.inventory.push("Herbs");
+            }
         }
 
         if (area.toLowerCase().includes("swamps")) {
