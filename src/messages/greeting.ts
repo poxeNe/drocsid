@@ -1,6 +1,6 @@
 import { lib } from "../util/lib"
 import { Character } from "../character/Character";
-import {drocsay} from "../util/drocsay";
+import { drocsay } from "../util/drocsay";
 
 export const greeting = async (player: Character) => {
 
