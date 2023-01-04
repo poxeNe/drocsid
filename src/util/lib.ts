@@ -196,4 +196,3 @@ export const lib = {
         feet_kilometer: Math.ceil((1000 * 39.37) / 12),
     },
 };
-
