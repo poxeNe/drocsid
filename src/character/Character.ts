@@ -13,7 +13,7 @@ type SpellStats = {
 }
 // what else
 
-type EquipSlots = {
+export type EquipSlots = {
     leftHand: WeaponStats | null;
     rightHand: WeaponStats | null;
     handArmor: WeaponStats | null;
