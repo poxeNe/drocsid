@@ -16,9 +16,6 @@ export const chkPlayerAlive = async (player: Character, enemy: Enemy) => {
         console.log(drocsay("----------] Final Stats [---------- ]-", "cyan"));
         console.log(prism(`Level: ${ player.level }  \nCurrent XP: ${ player.currentXp }  \nCurrent Gold: ${ player.currentGold }  \nEquipped Items: ${ player.equipped }  \nSpells Known: ${ player.spellbook }  \nArea Died: ${ player.area }`, "blue"));
 
-        /*
-        TODO: maybe list out a character sheet upon death with stats, equipment, total xp, etc.
-         */
         process.exit(1);
     } else {
 

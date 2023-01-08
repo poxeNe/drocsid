@@ -7,8 +7,8 @@ import { Enemies } from "../enemies/enemies";
 import { Areas } from "../character/Character";
 import { travelAction } from "./travelAction";
 import { restAction } from "./restAction";
-import {drocsay} from "../util/drocsay";
-import {prism} from "../util/prism";
+import { drocsay } from "../util/drocsay";
+import { prism } from "../util/prism";
 
 export const actions = async (player: Character) => {
 
@@ -22,8 +22,8 @@ export const actions = async (player: Character) => {
     console.log(drocsay("What would you like to do?:", "blue"));
 
 // Prompt the player with the menu and await their response to the question.
-    const playerChoice = await rl.question(prism(`\n  -[ 1 ] Fight. \n  -[ 2 ] Rest. \n  -[ 3 ] Travel. \n  -[ 4 ] Exit.
-    `, "cyan"));
+    const playerChoice = await rl.question(`\n  ${ prism("-[ 1 ]", "cyan") } ${ prism("Fight", "white") } \n  ${ prism("-[ 2 ]", "cyan") } ${ prism("Rest", "white") } \n  ${ prism("-[ 3 ]", "cyan") } ${ prism("Travel", "white") } \n  ${ prism("-[ 4 ]", "cyan") } ${ prism("Inventory", "white") } \n  ${ prism("-[ 5 ]", "cyan") } ${ prism("Character", "white") } \n  ${ prism("-[ 6 ]", "cyan") } ${ prism("Exit", "white") }
+    `);
 
 // We now use the player's response, or "Promise", to determine which option to trigger.
     switch (playerChoice) {
@@ -42,8 +42,32 @@ export const actions = async (player: Character) => {
             await lib.misc.sleep(1500);
             break;
 
-        case "4":
-            console.log(drocsay(`EXIT ] Until next time, ${ player.name }!`, "cyan"));
+        case "4": // TODO: Implement inventory menu that allows you to drop items.
+            console.log(drocsay(`Inventory`, "white"));
+            await lib.misc.sleep(1500);
+            break;
+
+        case "5":
+            console.log(drocsay("-=- ]- Character Stats -[ -=- ]-", "cyan"));
+            console.log(prism(`  - Level: ${ player.level }` +
+            `\n  - XP: ${ player.currentXp }` +
+            `\n  - Gold: ${ player.currentGold }` +
+            `\n  - Equipped Items:` +
+                `\n    - Right Hand: ${ player.equipped.rightHand?.name }` +
+                `\n    - Left Hand: ${ player.equipped.leftHand?.name }` +
+                `\n    - Hand Armor: ${ player.equipped.handArmor?.name }` +
+                `\n    - Chest Hand: ${ player.equipped.chestArmor?.name }` +
+                `\n    - Leg Hand: ${ player.equipped.legArmor?.name }` +
+                `\n    - Amulet: ${ player.equipped.amulet?.name }` +
+                `\n    - Right Ring: ${ player.equipped.rightRing?.name }` +
+                `\n    - Left Ring: ${ player.equipped.leftRing?.name }` +
+            `\n  - Spells Known: ${ player.spellbook }` +
+            `\n  - Current Area: ${ player.area }`, "blue"));
+            await lib.misc.sleep(1500);
+            break;
+
+        case "6":
+            console.log(drocsay(`EXIT ] Until next time, ${ player.name }!`, "red"));
             process.exit(1);
             break;
 
