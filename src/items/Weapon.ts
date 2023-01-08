@@ -107,15 +107,15 @@ export class Weapon implements WeaponStats {
                 break;
 
             case "halberd":
-                this.baseMinDamage = lib.random.int(2, 3); this.baseMaxDamage = lib.random.int(8, 9);
+                this.baseMinDamage = lib.random.int(2, 5); this.baseMaxDamage = lib.random.int(8, 11);
                 break;
 
             case "greatsword":
-                this.baseMinDamage = lib.random.int(3, 4); this.baseMaxDamage = lib.random.int(9, 10);
+                this.baseMinDamage = lib.random.int(2, 5); this.baseMaxDamage = lib.random.int(7, 10);
                 break;
 
             case "greataxe":
-                this.baseMinDamage = lib.random.int(4, 5); this.baseMaxDamage = lib.random.int(10, 11);
+                this.baseMinDamage = lib.random.int(2, 6); this.baseMaxDamage = lib.random.int(8, 12);
                 break;
 
         //--- CASTER WEAPONS ---//

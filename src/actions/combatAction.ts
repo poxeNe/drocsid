@@ -11,7 +11,7 @@ import { mkAttackRoll } from "../combat/mkAttackRoll";
 import { chkCombatSkillGains } from "../combat/chkCombatSkillGains";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
-import {chkPlayerAlive} from "../combat/chkPlayerAlive";
+import { chkPlayerAlive } from "../combat/chkPlayerAlive";
 
 export const combatAction = async (player: Character, enemy: Enemy) => {
 
@@ -49,9 +49,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 await lib.misc.sleep(1000);
 
             // Roll to see if we hit or not.
-                await mkAttackRoll();
-
-            // If we hit, do these things.
+            // If we successfully hit, do these things.
                 if (await mkAttackRoll()) {
                     enemy.currentHealth -= await calcPlayerDamage(player, enemy, "physical");
 
@@ -65,7 +63,7 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         player.currentXp += enemy.xpValue;
                         player.currentGold += enemy.goldValue;
 
-                        console.log(drocsay(`Your strike to the ${ prism(`${ enemy.baseType }`, "magenta") } was ${ prism("fatal", "red") }!`));
+                        console.log(drocsay(`You strike the ${ prism(`${ enemy.baseType }`, "magenta") } for ${ prism(`${ await calcPlayerDamage(player, enemy, "physical") }`, "yellow") }! It was ${ prism("slain", "red") }!`));
                         await lib.misc.sleep(1000);
 
                         if (await chkCombatSkillGains(player, "physical")) {
@@ -127,9 +125,9 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                 player.currentHealth -= calcEnemyDamage(player, enemy, "physical");
 
             // When the player has no health remaining, display a message and then exit the game.
-            /* TODO: implement different penalties on death, especially after we have save games, as the player would just be able
-                to reload the game and keep playing.
-             */
+    /* TODO: implement different penalties on death, especially after we have save games, as the player would just be able
+        to reload the game and keep playing.
+     */
                 await chkPlayerAlive(player, enemy);
 
                 console.log(drocsay(`The ${ prism(`${ enemy.baseType }`, "magenta") } hits you for ${ prism(`${ calcEnemyDamage(player, enemy, "physical") }`, "yellow") }! You have ${ prism(`${ player.currentHealth } health`, "yellow") } remaining!`));
