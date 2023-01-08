@@ -1,6 +1,6 @@
 import { lib } from "../util/lib"
 import readline from "readline/promises";
-import { Character } from "../character/Character";
+import { Character, EquipSlots } from "../character/Character";
 import { combatAction } from "./combatAction";
 import { Enemy, getEnemy } from "../enemies/Enemy";
 import { Enemies } from "../enemies/enemies";
@@ -9,6 +9,7 @@ import { travelAction } from "./travelAction";
 import { restAction } from "./restAction";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
+import { printEquippedItems } from "../messages/printEquippedItems";
 
 export const actions = async (player: Character) => {
 
@@ -52,17 +53,13 @@ export const actions = async (player: Character) => {
             console.log(prism(`  - Level: ${ player.level }` +
             `\n  - XP: ${ player.currentXp }` +
             `\n  - Gold: ${ player.currentGold }` +
-            `\n  - Equipped Items:` +
-                `\n    - Right Hand: ${ player.equipped.rightHand?.name }` +
-                `\n    - Left Hand: ${ player.equipped.leftHand?.name }` +
-                `\n    - Hand Armor: ${ player.equipped.handArmor?.name }` +
-                `\n    - Chest Hand: ${ player.equipped.chestArmor?.name }` +
-                `\n    - Leg Hand: ${ player.equipped.legArmor?.name }` +
-                `\n    - Amulet: ${ player.equipped.amulet?.name }` +
-                `\n    - Right Ring: ${ player.equipped.rightRing?.name }` +
-                `\n    - Left Ring: ${ player.equipped.leftRing?.name }` +
-            `\n  - Spells Known: ${ player.spellbook }` +
             `\n  - Current Area: ${ player.area }`, "blue"));
+            console.log(prism(`  - Equipped Items: `, "blue"));
+
+            printEquippedItems(player);
+
+            console.log(prism(`  - Spells Known: ${ player.spellbook }`, "blue"));
+
             await lib.misc.sleep(1500);
             break;
 
