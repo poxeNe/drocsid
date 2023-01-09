@@ -2,6 +2,7 @@ import { lib } from "../util/lib";
 import { actions } from "../actions/actions";
 import { main } from "../main";
 import { enemies, Enemies } from "./enemies";
+import {items} from "../items/items";
 
 export class Enemy {
     name?: string;
@@ -40,7 +41,7 @@ export class Enemy {
             const randInt = lib.random.int(1, 1);
 
             if (randInt === 1) {
-                this.inventory.push("Herbs");
+                this.giveItem(items.drops.forest.herbs, 1);
             }
         }
 
@@ -212,6 +213,12 @@ export class Enemy {
         }
 
         return enemyHealth;
+    }
+
+    giveItem = (item: any, amount: number) => {
+        for (let i = 0; i < amount; i++) {
+            this.inventory.push(item);
+        }
     }
 
 }

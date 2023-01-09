@@ -1,8 +1,8 @@
 import { lib } from "../util/lib";
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { drocsay } from "../util/drocsay";
 
-export const chkCombatSkillGains = (player: Character, skillUsed: string) => {
+export const chkCombatSkillGains = (player: Player, skillUsed: string) => {
     let gripType: "oneHandWeapons" | "twoHandWeapons";
     // let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
 

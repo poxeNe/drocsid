@@ -1,10 +1,10 @@
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { lib } from "../util/lib";
 import { Enemy } from "../enemies/Enemy";
 import { mkAttackRoll } from "./mkAttackRoll";
 import { drocsay } from "../util/drocsay";
 
-export const calcPlayerDamage = async (player: Character, enemy: Enemy, attackType: string) => {
+export const calcPlayerDamage = async (player: Player, enemy: Enemy, attackType: string) => {
 
     if (attackType === "physical") {
         let playerPhysicalAttackCause;

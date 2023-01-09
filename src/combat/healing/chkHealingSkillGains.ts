@@ -1,7 +1,7 @@
 import { lib } from "../../util/lib";
-import { Character } from "../../character/Character";
+import { Player } from "../../character/Player";
 
-export const chkHealingSkillGains = (player: Character) => {
+export const chkHealingSkillGains = (player: Player) => {
 
     const randInt = lib.random.int(1, 100)
     const playerHealingSkill = (player.skills.healing += 0.1).toFixed(1);

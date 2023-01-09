@@ -10,9 +10,20 @@ export type Items = {
         }
         elite: {}
     }
+    drops: {
+        forest: { [itemName: string]: GlobalItemProps }
+        swamps: {}
+        mountains: {}
+    }
 }
 
-export type NormalType = keyof Items['bases']['normal'];
+export type GlobalItemProps = {
+    name: string
+    equippable: boolean
+    usable: boolean
+}
+
+// export type NormalType = keyof Items['bases']['normal'];
 
 export const items: Items  = {
     bases: {
@@ -28,12 +39,14 @@ export const items: Items  = {
                 "Great Axe",
                 "Halberd",
             ],
+
             // ranged: [
             //     "Sling",
             //     "Shortbow",
             //     "Longbow",
             //     "Compound Bow",
             // ],
+
             caster: [
                 "Wand",
                 "Crosier",
@@ -44,5 +57,22 @@ export const items: Items  = {
             ],
         },
         elite: {},
+    },
+
+    drops: {
+        forest: {
+            mushrooms: {
+                name: "Mushrooms",
+                equippable: false,
+                usable: true,
+            },
+            herbs: {
+                name: "Herbs",
+                equippable: false,
+                usable: true,
+            },
+        },
+        swamps: {},
+        mountains: {},
     },
 }

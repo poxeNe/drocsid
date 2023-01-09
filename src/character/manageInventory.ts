@@ -3,11 +3,11 @@
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
 import readline from "readline/promises";
-import { Character } from "./Character";
+import { Player } from "./Player";
 import { actions } from "../actions/actions";
 
 
-export const manageInventory = async (player: Character) => {
+export const manageInventory = async (player: Player) => {
 
 // Initialization of readline interface.
     const rl = readline.createInterface({
@@ -16,14 +16,13 @@ export const manageInventory = async (player: Character) => {
         terminal: false,
     });
 
-
     console.log(drocsay("What would you like to do?:", "blue"));
 
 // Prompt the player with the menu and await their response to the question.
     const playerChoice = await rl.question(
         `  ${ prism("-[", "blue") } ${ prism("1", "white") } ${ prism("]", "blue") } ${ prism("Equip", "white") }` +
         `\n  ${ prism("-[", "blue") } ${ prism("2", "white") } ${ prism("]", "blue") } ${ prism("Drop", "white") }` +
-        `\n  ${ prism("-[", "blue") } ${ prism("3", "white") } ${ prism("]", "blue") } ${ prism("Exit", "white") }
+        `\n  ${ prism("-[", "blue") } ${ prism("3", "white") } ${ prism("]", "blue") } ${ prism("Back", "white") }
     `);
 
     switch (playerChoice) {

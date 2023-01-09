@@ -1,8 +1,8 @@
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { WeaponStats } from "../items/Weapon";
 import { prism } from "../util/prism";
 
-export const printEquippedItems = (player: Character) => {
+export const printEquippedItems = (player: Player) => {
 
     console.log(prism(`  - Equipped Items: `, "blue"));
 

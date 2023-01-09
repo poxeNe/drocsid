@@ -1,7 +1,7 @@
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import {prism} from "../util/prism";
 
-export const printCharacterSheet = (player: Character) => {
+export const printCharacterSheet = (player: Player) => {
 
     console.log(`\n${ prism("-[", "cyan") }${ prism("-=-", "magenta") }${ prism("]-", "cyan") } ${ prism("CHARACTER", "yellow") } ${ prism("-[", "cyan") }${ prism("-=-", "magenta") }${ prism("]-", "cyan") }`);
     console.log(prism(`  - Level: ${ player.level }` +

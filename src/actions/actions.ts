@@ -2,7 +2,7 @@
 
 import { lib } from "../util/lib"
 import readline from "readline/promises";
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { combatAction } from "./combatAction";
 import { getEnemy } from "../enemies/Enemy";
 import { travelAction } from "./travelAction";
@@ -11,11 +11,11 @@ import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
 import { printEquippedItems } from "../messages/printEquippedItems";
 import { printInventory } from "../messages/printInventory";
-import {manageInventory} from "../character/manageInventory";
-import {printCharacterSheet} from "../messages/printCharacterSheet";
-import {printSpellsKnown} from "../messages/printSpellsKnown";
+import { manageInventory } from "../character/manageInventory";
+import { printCharacterSheet } from "../messages/printCharacterSheet";
+import { printSpellsKnown } from "../messages/printSpellsKnown";
 
-export const actions = async (player: Character) => {
+export const actions = async (player: Player) => {
 
 // Initialization of readline interface.
     const rl = readline.createInterface( {
@@ -32,7 +32,7 @@ export const actions = async (player: Character) => {
     `\n  ${ prism("-[", "blue") } ${ prism("2", "white") } ${ prism("]", "blue") } ${ prism("Rest", "white") }` +
     `\n  ${ prism("-[", "blue") } ${ prism("3", "white") } ${ prism("]", "blue") } ${ prism("Travel", "white") }` +
     `\n  ${ prism("-[", "blue") } ${ prism("4", "white") } ${ prism("]", "blue") } ${ prism("Inventory", "white") }` +
-    `\n  ${ prism("-[", "blue") } ${ prism("5", "white") } ${ prism("]", "blue") } ${ prism("Character Sheet", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("5", "white") } ${ prism("]", "blue") } ${ prism("Player Sheet", "white") }` +
     `\n  ${ prism("-[", "blue") } ${ prism("6", "white") } ${ prism("]", "blue") } ${ prism("Exit", "white") }
     `);
 

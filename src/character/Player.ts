@@ -1,10 +1,9 @@
 import { lib } from "../util/lib";
-import { items } from "../items/items";
-import { getWeapon, WeaponStats} from "../items/Weapon";
-import { getStartingEquipment } from "./getStartingEquipment";
+import {GlobalItemProps, Items} from "../items/items";
+import { WeaponStats } from "../items/Weapon";
 
 export type Areas = "forest" | "swamps" | "mountains"
-export type Profession = "warrior" | "mage" | "thief";
+export type Profession = "warrior" | "thief" | "mage";
 
 type SpellStats = {
     getDamage: () => number
@@ -24,6 +23,8 @@ export type EquipSlots = {
     rightRing: WeaponStats | null;
 }
 
+export type SkillTypes = "oneHandWeapons" | "twoHandWeapons" | "lightArmor" | "heavyArmor" | "evocation" | "meditation" | "healing" | "mining";
+
 const getDefaultEquipment = (): EquipSlots => {
     return {
         leftHand: null,
@@ -39,7 +40,7 @@ const getDefaultEquipment = (): EquipSlots => {
 
 type DamageType = 'physical' | 'magikal';
 
-export class Character {
+export class Player {
     name: string;
     // status = "";
     level = 1;
@@ -69,14 +70,14 @@ export class Character {
     };
     spellbook: { [spellName: string]: SpellStats } = {};
     equipped: EquipSlots = getDefaultEquipment();
-    inventory: string[] = [];
+    inventory: GlobalItemProps[] = [];
     area: Areas = "forest";
 
     constructor(name: string, profession: Profession) {
         this.name = name;
         this.profession = profession;
 
-        // Add more stat blocks depending on the profession the player chooses.
+    // Add more stat blocks depending on the profession the player chooses.
         switch (profession) {
             case "warrior":
                 this.currentHealth = 20;
@@ -145,7 +146,7 @@ export class Character {
         }
     }
 
-    giveItem = (item: string, amount: number) => {
+    giveItem = (item: any, amount: number) => {
         for (let i = 0; i < amount; i++) {
             this.inventory.push(item);
         }

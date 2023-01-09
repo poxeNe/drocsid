@@ -37,6 +37,7 @@ type BackgroundOptions = {
 export const prism = (message: string | number, fgColor: keyof ForegroundOptions, styleType?: keyof StyleOptions, bgColor?: keyof BackgroundOptions) => {
     let output = "";
 
+//--- STYLES
     const style = {
         reset: "\x1b[0m",
         bright: "\x1b[1m",
@@ -47,6 +48,7 @@ export const prism = (message: string | number, fgColor: keyof ForegroundOptions
         hidden: "\x1b[8m",
     };
 
+//--- FOREGROUND COLORS
     const fg = {
         white: "",
         black: "\x1b[30m",
@@ -60,6 +62,7 @@ export const prism = (message: string | number, fgColor: keyof ForegroundOptions
         crimson: "\x1b[38m" // Scarlet
     };
 
+//--- BACKGROUND COLORS
     const bg = {
         black: "\x1b[40m",
         red: "\x1b[41m",
