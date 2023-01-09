@@ -111,16 +111,16 @@ class Character {
     }
 }
 exports.Character = Character;
-// class Thief extends Character {
+// class Thief extends Player {
 //     constructor() {
 //         this.health = 15;
 //     }
 // }
 /*
 
-const myChar = new Character();
+const myChar = new Player();
 
-// Character.prototype.doDamage = function(enemy) {
+// Player.prototype.doDamage = function(enemy) {
 //     this.profession.doDamage(enemy)
 // }
 

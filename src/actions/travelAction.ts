@@ -1,9 +1,9 @@
 import { lib } from "../util/lib";
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { drocsay } from "../util/drocsay";
 
 
-export const travelAction = async (player: Character) => {
+export const travelAction = async (player: Player) => {
 
     if (player.level < 3) {
         console.log(drocsay("The trees and foliage are too thick to see -- you feel lost and can't find a clear path out.", "yellow"));

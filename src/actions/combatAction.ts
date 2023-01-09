@@ -1,4 +1,4 @@
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { Enemy } from "../enemies/Enemy";
 import { lib } from "../util/lib";
 import readline from "readline/promises";
@@ -12,8 +12,9 @@ import { chkCombatSkillGains } from "../combat/chkCombatSkillGains";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
 import { chkPlayerAlive } from "../combat/chkPlayerAlive";
+import {printSkillGains} from "../messages/printSkillGains";
 
-export const combatAction = async (player: Character, enemy: Enemy) => {
+export const combatAction = async (player: Player, enemy: Enemy) => {
 
 // Initialization of readline interface.
     const rl = readline.createInterface( {
@@ -34,11 +35,15 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
         // const playerPhysicalAttackCause = calcPlayerDamage();
         // const enemyPhysicalDamageCause = calcEnemyDamage();
 
-        console.log(drocsay("What would you like to do?: "));
+        console.log(drocsay("What would you like to do?: ", "blue"));
 
     // Prompt the player with the menu and await their response to the question.
-        const playerChoice = await rl.question(prism(`\n  -[ 1 ] Physical Attack. \n  -[ 2 ] Magikal Attack. \n  -[ 3 ] Heal. \n  -[ 4 ] Flee.
-        `, "cyan"));
+        const playerChoice = await rl.question(
+            `  ${ prism("-[", "blue") } ${ prism("1", "white") } ${ prism("]", "blue") } ${ prism("Physical Attack", "white") }` +
+            `\n  ${ prism("-[", "blue") } ${ prism("2", "white") } ${ prism("]", "blue") } ${ prism("Magikal attack", "white") }` +
+            `\n  ${ prism("-[", "blue") } ${ prism("3", "white") } ${ prism("]", "blue") } ${ prism("Heal", "white") }` +
+            `\n  ${ prism("-[", "blue") } ${ prism("4", "white") } ${ prism("]", "blue") } ${ prism("Flee", "white") }
+        `);
 
         switch (playerChoice) {
 
@@ -67,20 +72,17 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         await lib.misc.sleep(1000);
 
                         if (await chkCombatSkillGains(player, "physical")) {
-                            let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
-                            let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
+                            let skillType: "oneHandWeapons" | "twoHandWeapons";
 
                             if (player.equipped.rightHand?.gripType === 1) {
-                                skillType = "One-Hand Weapons";
-                                skillTypeFormatted = "oneHandWeapons";
+                                skillType = "oneHandWeapons";
                             } else if (player.equipped.rightHand?.gripType === 2) {
-                                skillType = "Two-Hand Weapons";
-                                skillTypeFormatted = "twoHandWeapons";
+                                skillType = "twoHandWeapons";
                             } else {
                                 throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                             }
 
-                            console.log(drocsay(`Your skill with ${ prism(`${ skillType }`, "blue") } has increased by ${ prism(`0.1`, "blue") }! Your ${ prism(`${ skillType }`, "blue") } level is now ${ prism(`${ player.skills[skillTypeFormatted] }`, "blue") }.`));
+                            printSkillGains(player, skillType);
 
                             await lib.misc.sleep(1000);
                         }
@@ -90,7 +92,10 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
                         await lib.misc.sleep(1000);
 
                     // For each item in the enemy's inventory, add it to ours.
-                        enemy.inventory.forEach(e => player.inventory.push(e));
+
+                        for (const item of enemy.inventory) {
+                            player.giveItem(item, 1);
+                        }
 
                         console.log(drocsay(`The enemy dropped ${ prism(`${ lib.array.commas(enemy.inventory) }`, "magenta") }. You put the things in your pack.`));
 
@@ -99,20 +104,18 @@ export const combatAction = async (player: Character, enemy: Enemy) => {
 
                 // Roll to see if we gain any skills or not.
                     if (await chkCombatSkillGains(player, "physical")) {
-                        let skillType: "One-Hand Weapons" | "Two-Hand Weapons";
-                        let skillTypeFormatted: "oneHandWeapons" | "twoHandWeapons";
+                        let skillType: "oneHandWeapons" | "twoHandWeapons";
 
                         if (player.equipped.rightHand?.gripType === 1) {
-                            skillType = "One-Hand Weapons";
-                            skillTypeFormatted = "oneHandWeapons";
+                            skillType = "oneHandWeapons";
                         } else if (player.equipped.rightHand?.gripType === 2) {
-                            skillType = "Two-Hand Weapons";
-                            skillTypeFormatted = "twoHandWeapons";
+                            skillType = "twoHandWeapons";
                         } else {
                             throw new Error(drocsay("ERROR ] Could not determine skillType! (combatAction)", "red"));
                         }
 
-                        console.log(drocsay(`Your skill with ${ prism(`${ skillType }`, "blue") } has increased by 0.1! Your ${ prism(`${ skillType }`, "blue") } level is now ${ player.skills[skillTypeFormatted] }.`));
+                        printSkillGains(player, skillType);
+
                         await lib.misc.sleep(1000);
                     }
 

@@ -1,40 +1,65 @@
+import {drocsay} from "./drocsay";
 
 export const formatWeaponBaseOut = (weaponBase: string) => {
 
-    if (weaponBase === "dagger") {
-        return "Dagger";
-    }
+    switch (weaponBase) {
 
-    if (weaponBase === "handAxe" || weaponBase === "handaxe") {
-        return "Hand Axe";
-    }
+    //--- MELEE ---//
+        case "dagger":
+            return "Dagger";
 
-    if (weaponBase === "javelin") {
-        return "Javelin";
-    }
+        case "handAxe":
+        case "handaxe":
+            return "Hand Axe";
 
-    if (weaponBase === "shortsword") {
-        return "Shortsword";
-    }
+        case "javelin":
+            return "Javelin";
 
-    if (weaponBase === "doubleAxe" || weaponBase === "doubleaxe") {
-        return "Double Axe";
-    }
+        case "shortsword":
+            return "Shortsword";
 
-    if (weaponBase === "spear") {
-        return "Spear";
-    }
+        case "doubleAxe":
+        case "doubleaxe":
+            return "Double Axe";
 
-    if (weaponBase === "greatsword") {
-        return "Greatsword";
-    }
+        case "spear":
+            return "Spear";
 
-    if (weaponBase === "greatAxe" || weaponBase === "greataxe") {
-        return "Great Axe";
-    }
+        case "greatsword":
+            return "Greatsword";
 
-    if (weaponBase === "halberd") {
-        return "Halberd";
+        case "greatAxe":
+        case "greataxe":
+            return "Great Axe";
+
+        case "halberd":
+            return "Halberd";
+
+    //--- CASTER ---//
+        case "wand":
+            return "Wand";
+
+        case "crosier":
+            return "Crosier";
+
+        case "shortStaff":
+        case "shortstaff":
+            return "Short Staff";
+
+        case "longStaff":
+        case "longstaff":
+            return "Long Staff";
+
+        case "metalStaff":
+        case "metalstaff":
+            return "Metal Staff";
+
+        case "warStaff":
+        case "warstaff":
+            return "War Staff";
+
+        default:
+            throw new Error(drocsay("ERROR ] Invalid weapon type! (formatWeaponBaseOut)"));
     }
 
 }

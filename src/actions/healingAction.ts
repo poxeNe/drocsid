@@ -1,11 +1,29 @@
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 import { lib } from "../util/lib";
 import { chkHealingSkillGains } from "../combat/healing/chkHealingSkillGains";
 import { drocsay } from "../util/drocsay";
+import { prism } from "../util/prism";
+import { printSkillGains } from "../messages/printSkillGains";
 
-export const healingAction = (player: Character) => {
 
-    if (player.inventory.includes("Herbs" || "herbs")) {
+
+export const healingAction = (player: Player) => {
+    let i = 0;
+    let hasMushrooms = false;
+
+// Check the name of each object in the player's inventory for any Mushrooms, and provide the index so we can splice the item
+// off of the inventory array after we "use" it.
+    for (const item of player.inventory) {
+        if (item.name.toLowerCase() === "mushrooms") {
+            hasMushrooms = true;
+            break;
+
+        } else {
+            i++;
+        }
+    }
+
+    if (hasMushrooms) {
 
         if (player.currentHealth >= player.maxHealth) {
             console.log(drocsay("You are already at max health -- you cannot heal right now!", "red"));
@@ -13,26 +31,31 @@ export const healingAction = (player: Character) => {
             return;
         }
 
-    // Remove the first instance of herbs from the player's inventory to heal.
-        player.inventory.splice(player.inventory.indexOf("Herbs" || "herbs", 1))
+    // Splice, or remove, the first instance of Mushrooms from the player's inventory.
+        player.inventory.splice(i, 1);
+        let randInt = 0;
 
-        const randInt = lib.random.int(3, 8);
+    // TODO: Implement different items that heal for different amounts.
+        if (hasMushrooms) {
+            randInt = lib.random.int(3, 8);
+        }
+
         const healAmount = Math.floor(randInt + player.skills.healing);
 
         player.currentHealth += healAmount;
 
         player.chkMaxHealth(player.currentHealth);
 
-        console.log(drocsay(`You eat some herbs and recover ${ healAmount } health! Your health is now ${ player.currentHealth }.`, "green"));
+        console.log(drocsay(`${ prism(`You eat a handful of`, "white") } ${ prism(`Mushrooms`, "magenta") } ${ prism("and", "white") } ${ prism(`recover ${ healAmount } health`, "green") }! ${ prism(`Your health is now`, "white") } ${ prism(`${ player.currentHealth }`, "green") }.`));
 
         if (chkHealingSkillGains(player)) {
-            console.log(drocsay(`Your skill with Healing has increased by 0.1! Your Healing level is now ${ player.skills.healing }.`, "green"));
+            printSkillGains(player, "healing");
         }
 
         return;
 
     } else {
-        console.log(drocsay("You aren't currently carrying any herbs -- you cannot heal right now!", "red"));
+        console.log(drocsay("You aren't currently carrying any mushrooms -- you cannot heal right now!", "red"));
 
         return;
     }

@@ -1,7 +1,7 @@
 import { Enemy } from "../enemies/Enemy";
-import { Character } from "../character/Character";
+import { Player } from "../character/Player";
 
-export const calcEnemyDamage = (player: Character, enemy: Enemy, attackType: string) => {
+export const calcEnemyDamage = (player: Player, enemy: Enemy, attackType: string) => {
 
     if (attackType === 'physical') {
         let enemyPhysicalDamageCause = enemy.physicalAttack - player.physicalDefense;

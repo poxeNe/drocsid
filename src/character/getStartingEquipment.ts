@@ -1,7 +1,8 @@
-import { Character } from "./Character";
+import { Player } from "./Player";
 import { getWeapon, Weapon, WeaponStats} from "../items/Weapon";
+import { items } from "../items/items";
 
-export const getStartingEquipment = (player: Character) => {
+export const getStartingEquipment = (player: Player) => {
 
     if (player.profession === "warrior") {
         player.equipItem(getWeapon("common", "greatsword"), "rightHand")
@@ -15,6 +16,7 @@ export const getStartingEquipment = (player: Character) => {
         player.equipItem(getWeapon("magikal", "crosier"), "rightHand")
     }
 
-    player.giveItem("Herbs", 2);
+    player.giveItem(items.drops.forest["mushrooms"], 2);
+    player.giveItem(items.drops.forest.herbs, 1);
 
 }

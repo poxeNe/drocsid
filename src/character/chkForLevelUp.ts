@@ -1,7 +1,7 @@
-import { Character } from "./Character";
+import { Player } from "./Player";
 import { lib } from "../util/lib";
 
-export const chkForLevelUp = (player: Character) => {
+export const chkForLevelUp = (player: Player) => {
     if (player.currentXp < player.xpToNextLevel) {
         return;
 

@@ -1,5 +1,5 @@
 import readline from "readline/promises";
-import { Character, Profession } from "./Character";
+import { Player, Profession } from "./Player";
 import { getStartingEquipment } from "./getStartingEquipment";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
@@ -24,7 +24,7 @@ export const mkNewCharacter = async () => {
 
     rl.close();
 
-    const player = new Character(name, profession.toLowerCase() as Profession);
+    const player = new Player(name, profession.toLowerCase() as Profession);
 
     await getStartingEquipment(player);
 
