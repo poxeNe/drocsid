@@ -34,7 +34,7 @@ type BackgroundOptions = {
     crimson: string,
 };
 
-export const prism = (message: string, fgColor: keyof ForegroundOptions, styleType?: keyof StyleOptions, bgColor?: keyof BackgroundOptions) => {
+export const prism = (message: string | number, fgColor: keyof ForegroundOptions, styleType?: keyof StyleOptions, bgColor?: keyof BackgroundOptions) => {
     let output = "";
 
     const style = {

@@ -4,6 +4,8 @@ import { prism } from "../util/prism";
 
 export const printEquippedItems = (player: Character) => {
 
+    console.log(prism(`  - Equipped Items: `, "blue"));
+
     for (const [slot, item] of Object.entries(player.equipped)) {
         if (item) {
             console.log(`    ${prism(`- ${slot}:`, "blue")} ${item.name}`);

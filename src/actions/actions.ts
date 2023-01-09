@@ -1,15 +1,19 @@
+// noinspection DuplicatedCode
+
 import { lib } from "../util/lib"
 import readline from "readline/promises";
-import { Character, EquipSlots } from "../character/Character";
+import { Character } from "../character/Character";
 import { combatAction } from "./combatAction";
-import { Enemy, getEnemy } from "../enemies/Enemy";
-import { Enemies } from "../enemies/enemies";
-import { Areas } from "../character/Character";
+import { getEnemy } from "../enemies/Enemy";
 import { travelAction } from "./travelAction";
 import { restAction } from "./restAction";
 import { drocsay } from "../util/drocsay";
 import { prism } from "../util/prism";
 import { printEquippedItems } from "../messages/printEquippedItems";
+import { printInventory } from "../messages/printInventory";
+import {manageInventory} from "../character/manageInventory";
+import {printCharacterSheet} from "../messages/printCharacterSheet";
+import {printSpellsKnown} from "../messages/printSpellsKnown";
 
 export const actions = async (player: Character) => {
 
@@ -23,44 +27,52 @@ export const actions = async (player: Character) => {
     console.log(drocsay("What would you like to do?:", "blue"));
 
 // Prompt the player with the menu and await their response to the question.
-    const playerChoice = await rl.question(`\n  ${ prism("-[ 1 ]", "cyan") } ${ prism("Fight", "white") } \n  ${ prism("-[ 2 ]", "cyan") } ${ prism("Rest", "white") } \n  ${ prism("-[ 3 ]", "cyan") } ${ prism("Travel", "white") } \n  ${ prism("-[ 4 ]", "cyan") } ${ prism("Inventory", "white") } \n  ${ prism("-[ 5 ]", "cyan") } ${ prism("Character", "white") } \n  ${ prism("-[ 6 ]", "cyan") } ${ prism("Exit", "white") }
+    const playerChoice = await rl.question(
+    `  ${ prism("-[", "blue") } ${ prism("1", "white") } ${ prism("]", "blue") } ${ prism("Fight", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("2", "white") } ${ prism("]", "blue") } ${ prism("Rest", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("3", "white") } ${ prism("]", "blue") } ${ prism("Travel", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("4", "white") } ${ prism("]", "blue") } ${ prism("Inventory", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("5", "white") } ${ prism("]", "blue") } ${ prism("Character Sheet", "white") }` +
+    `\n  ${ prism("-[", "blue") } ${ prism("6", "white") } ${ prism("]", "blue") } ${ prism("Exit", "white") }
     `);
 
 // We now use the player's response, or "Promise", to determine which option to trigger.
     switch (playerChoice) {
         case "1":
             await combatAction(player, getEnemy(player.area));
+
             await lib.misc.sleep(1500);
             break;
 
         case "2": // TODO: Add resting action.
             await restAction(player);
+
             await lib.misc.sleep(1500);
             break;
 
         case "3":
             await travelAction(player);
+
             await lib.misc.sleep(1500);
             break;
 
         case "4": // TODO: Implement inventory menu that allows you to drop items.
-            console.log(drocsay(`Inventory`, "white"));
+
+            printInventory(player);
+
+            await lib.misc.sleep(1000);
+
+            await manageInventory(player);
+
             await lib.misc.sleep(1500);
             break;
 
         case "5":
-            console.log(drocsay("-=- ]- Character Stats -[ -=- ]-", "cyan"));
-            console.log(prism(`  - Level: ${ player.level }` +
-            `\n  - XP: ${ player.currentXp }` +
-            `\n  - Gold: ${ player.currentGold }` +
-            `\n  - Current Area: ${ player.area }`, "blue"));
-            console.log(prism(`  - Equipped Items: `, "blue"));
-
+            printCharacterSheet(player);
             printEquippedItems(player);
+            printSpellsKnown(player);
 
-            console.log(prism(`  - Spells Known: ${ player.spellbook }`, "blue"));
-
-            await lib.misc.sleep(1500);
+            await lib.misc.sleep(1000);
             break;
 
         case "6":
@@ -69,7 +81,11 @@ export const actions = async (player: Character) => {
             break;
 
         default:
-            throw new Error(drocsay("Not a valid choice. Try again.", "red"));
+            console.log(drocsay("ERROR ] Not a valid choice. Try again.", "red"));
+
+            await lib.misc.sleep(1000);
+
+            await actions(player);
     }
 
 // Close the readline interface to prevent multiple instances running and causing problems.
